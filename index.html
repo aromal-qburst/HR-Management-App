@@ -29,7 +29,7 @@
         <h2 class="content-heading">Employee Details</h2>
         <div id="format-table-tools" class="flex-box content-spacing">
             <div id="search-sort" class="flex-box">
-                <div class="dropdown-element">
+                <div class="dropdown-element" onclick="toggleDropdown(this)">
                     <div id="skill-dropdown" class="dropdown">
                         <span>Skill Search</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
@@ -37,7 +37,7 @@
                     <div id="skill-dropdown-content" class="dropdown-content display-none">
                     </div>
                 </div>
-                <div class="dropdown-element">
+                <div class="dropdown-element" onclick="toggleDropdown(this)">
                     <div id="sort-dropdown" class="dropdown">
                         <span>Employee ID (Low > High)</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
@@ -52,7 +52,8 @@
                     </div>
                 </div>
             </div>
-            <img class="new-employee-icon" src="images/new-employee.png" alt="Add new employee">
+            <img class="new-employee-icon" src="images/new-employee.png" alt="Add new employee"
+                onclick="addUpdateModal(true)">
         </div>
         <div id="list-employee" class="content-spacing">
             <ul class="flex-box">
@@ -62,33 +63,34 @@
                 <li class="position-operation">Operations</li>
             </ul>
             <ul class="flex-box">
-                <li class="position-id">1001</li>
-                <li class="position-name">Abcdef Xyz</li>
+                <li class="position-id" onclick="addUpdateModal(false)">1001</li>
+                <li class="position-name" onclick="addUpdateModal(false)">Abcdef Xyz</li>
                 <li class="position-skill">NodeJS, ReactJS</li>
-                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+                <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png"
+                        alt="Delete row of table"></li>
             </ul>
             <ul class="flex-box">
-                <li class="position-id">1002</li>
-                <li class="position-name">Budhuw Pyz</li>
+                <li class="position-id" onclick="addUpdateModal(false)">1002</li>
+                <li class="position-name" onclick="addUpdateModal(false)">Budhuw Pyz</li>
                 <li class="position-skill">JS, HTML, CSS</li>
-                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+                <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
             </ul>
             <ul class="flex-box">
-                <li class="position-id">1003</li>
-                <li class="position-name">Lorem Ipsum</li>
+                <li class="position-id" onclick="addUpdateModal(false)">1003</li>
+                <li class="position-name" onclick="addUpdateModal(false)">Lorem Ipsum</li>
                 <li class="position-skill">Python, Java</li>
-                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+                <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
             </ul>
             <ul class="flex-box">
-                <li class="position-id">1004</li>
-                <li class="position-name">Efhue Igert</li>
+                <li class="position-id" onclick="addUpdateModal(false)">1004</li>
+                <li class="position-name" onclick="addUpdateModal(false)">Efhue Igert</li>
                 <li class="position-skill">C, C++, Java</li>
-                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+                <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
             </ul>
         </div>
-        <div id="modal-background">
-            <div id="addUpdate-emp" class="modal container">
-                <strong id="modal-heading" class="content-spacing">Add Employee Details</strong>
+        <div id="modal-background" class="display-none">
+            <div id="addUpdate-emp" class="modal container display-none">
+                <strong id="modal-heading" class="content-spacing"></strong>
                 <form id="modal-form" action="">
                     <div class="form-item-spacing flex-box">
                         <label for="emp-name">Employee Name : </label>
@@ -108,24 +110,28 @@
                     </div>
                     <div class="form-item-spacing flex-box">
                         <label for="emp-skill">Employee Skills : </label>
-                        <div class="dropdown">
-                            <span>Skill</span>
-                            <img src="images/down-arrow.svg" alt="dropdown icon">
+                        <div class="dropdown-element" onclick="toggleDropdown(this)">
+                            <div class="dropdown">
+                                <span>Skill</span>
+                                <img src="images/down-arrow.svg" alt="dropdown icon">
+                            </div>
+                            <div class="dropdown-content display-none">
+                            </div>
                         </div>
                         <input type="text" id="emp-skill">
                     </div>
                     <div class="flex-box">
-                        <button class="cancel-btn">CANCEL</button>
-                        <input class="submit-btn" type="submit" value="SAVE">
+                        <button id="form-cancel" type="button" class="cancel-btn">CANCEL</button>
+                        <input id="form-submit" class="submit-btn" type="submit">
                     </div>
                 </form>
             </div>
-            <div id="confirmDelete-emp" class="modal">
+            <div id="confirmDelete-emp" class="modal display-none">
                 <img class="form-item-spacing" src="images/confirm-delete.png" alt="Confirm delete icon">
                 <strong class="form-item-spacing">Are you sure you want to delete this row?</strong>
                 <div>
-                    <button class="cancel-btn">NO</button>
-                    <button class="submit-btn">YES</button>
+                    <button id="cancel-delete" class="cancel-btn">NO</button>
+                    <button id="confirm-delete" class="submit-btn">YES</button>
                 </div>
             </div>
         </div>
@@ -135,6 +141,8 @@
     <footer id="footer">
         <span class="company-copyright">Copyright @ 2022 HR MANAGEMENT, All Rights Reserved</span>
     </footer>
+
+    <script src="js/main.js"></script>
 
 </body>
 
