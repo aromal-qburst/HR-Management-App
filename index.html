@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/icon.PNG" type="image/x-icon">
+    <title>HR Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header Starts-->
+    <header id="header">
+        <div class="container flex-box">
+            <h1>
+                <a href=""><img class="header-logo" src="images/logo.png" alt="App logo"></a>
+            </h1>
+            <div class="arrange-admin">
+                <img src="images/admin-pic.png" alt="Admin Picture">
+                <strong>Admin</strong>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Starts-->
+    <main id="main" class="container">
+        <h2 class="content-heading">Employee Details</h2>
+        <div id="format-table-tools" class="flex-box content-spacing">
+            <div id="search-sort" class="flex-box">
+                <div class="dropdown-element">
+                    <div id="skill-dropdown" class="dropdown">
+                        <span>Skill Search</span>
+                        <img src="images/down-arrow.svg" alt="dropdown icon">
+                    </div>
+                    <div id="skill-dropdown-content" class="dropdown-content display-none">
+                    </div>
+                </div>
+                <div class="dropdown-element">
+                    <div id="sort-dropdown" class="dropdown">
+                        <span>Employee ID (Low > High)</span>
+                        <img src="images/down-arrow.svg" alt="dropdown icon">
+                    </div>
+                    <div id="sort-dropdown-content" class="dropdown-content display-none">
+                        <ul>
+                            <li>Employee ID (Low > High)</li>
+                            <li>Employee ID (High > Low)</li>
+                            <li>Employee Name (A > Z)</li>
+                            <li>Employee Name (Z > A)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <img class="new-employee-icon" src="images/new-employee.png" alt="Add new employee">
+        </div>
+        <div id="list-employee" class="content-spacing">
+            <ul class="flex-box">
+                <li class="position-id">Employee ID</li>
+                <li class="position-name">Employee Name</li>
+                <li class="position-skill">Employee Skills</li>
+                <li class="position-operation">Operations</li>
+            </ul>
+            <ul class="flex-box">
+                <li class="position-id">1001</li>
+                <li class="position-name">Abcdef Xyz</li>
+                <li class="position-skill">NodeJS, ReactJS</li>
+                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+            </ul>
+            <ul class="flex-box">
+                <li class="position-id">1002</li>
+                <li class="position-name">Budhuw Pyz</li>
+                <li class="position-skill">JS, HTML, CSS</li>
+                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+            </ul>
+            <ul class="flex-box">
+                <li class="position-id">1003</li>
+                <li class="position-name">Lorem Ipsum</li>
+                <li class="position-skill">Python, Java</li>
+                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+            </ul>
+            <ul class="flex-box">
+                <li class="position-id">1004</li>
+                <li class="position-name">Efhue Igert</li>
+                <li class="position-skill">C, C++, Java</li>
+                <li class="position-operation"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+            </ul>
+        </div>
+        <div id="modal-background">
+            <div id="addUpdate-emp" class="modal container">
+                <strong id="modal-heading" class="content-spacing">Add Employee Details</strong>
+                <form id="modal-form" action="">
+                    <div class="form-item-spacing flex-box">
+                        <label for="emp-name">Employee Name : </label>
+                        <input type="text" id="emp-name">
+                    </div>
+                    <div class="form-item-spacing flex-box">
+                        <label for="emp-email">Employee Email : </label>
+                        <input type="email" id="emp-email">
+                    </div>
+                    <div class="form-item-spacing flex-box">
+                        <label for="emp-designation">Designation : </label>
+                        <input type="text" id="emp-designation">
+                    </div>
+                    <div class="form-item-spacing flex-box">
+                        <label for="emp-dob">Employee DoB : </label>
+                        <input type="text" id="emp-dob">
+                    </div>
+                    <div class="form-item-spacing flex-box">
+                        <label for="emp-skill">Employee Skills : </label>
+                        <div class="dropdown">
+                            <span>Skill</span>
+                            <img src="images/down-arrow.svg" alt="dropdown icon">
+                        </div>
+                        <input type="text" id="emp-skill">
+                    </div>
+                    <div class="flex-box">
+                        <button class="cancel-btn">CANCEL</button>
+                        <input class="submit-btn" type="submit" value="SAVE">
+                    </div>
+                </form>
+            </div>
+            <div id="confirmDelete-emp" class="modal">
+                <img class="form-item-spacing" src="images/confirm-delete.png" alt="Confirm delete icon">
+                <strong class="form-item-spacing">Are you sure you want to delete this row?</strong>
+                <div>
+                    <button class="cancel-btn">NO</button>
+                    <button class="submit-btn">YES</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Starts-->
+    <footer id="footer">
+        <span class="company-copyright">Copyright @ 2022 HR MANAGEMENT, All Rights Reserved</span>
+    </footer>
+
+</body>
+
+</html>
