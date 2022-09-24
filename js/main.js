@@ -3,6 +3,7 @@
 const toggleDropdown = function (element) {
     const dropdownContent = element.querySelector('.dropdown-content');
     const arrowDirection = element.querySelector('img');
+    
     if (dropdownContent.classList.contains('display-none')) {
         arrowDirection.src = 'images/up-arrow.svg';
         dropdownContent.classList.remove('display-none');

@@ -818,6 +818,60 @@ textarea {
     8. MEDIA QUERIES
 .................................................*/
 
+@media screen and (max-width: 2480px) {
+
+  #search-sort {
+    width: 70%;
+  }
+
+  .dropdown-element {
+    width: 200px;
+  }
+
+  .dropdown span {
+    font-size: 15px;
+  }
+
+  .dropdown-content ul li {
+    font-size: 17px;
+  }
+
+  .modal {
+    width: 95%;
+  }
+
+  #modal-heading {
+    font-size: 40px;
+  }
+
+  #modal-form {
+    width: 70%;
+  }
+
+  #modal-form label {
+    font-size: 20px;
+  }
+
+  #modal-form input[type="text"],
+  #modal-form input[type="email"] {
+    font-size: 16px;
+    padding: 5px 4px;
+  }
+
+  #modal-form .dropdown {
+    padding: 4px 0;
+  }
+
+  #modal-form .dropdown-element {
+    width: 130px;
+  }
+
+  #confirmDelete-emp {
+    width: 60%;
+  }
+
+}
+
 @media screen and (max-width: 1250px) {
 
 }
