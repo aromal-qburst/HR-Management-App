@@ -542,9 +542,11 @@ textarea {
 :root {
   --black: #000;
   --white: #fff;
+  --darkblue: #0c4b7e;
   --gray: #fefefe;
   --red: #ff0000;
   --green: #00FF00;
+  --lightgreen: #68bd45;
 }
 
 /*................................................
@@ -577,9 +579,9 @@ textarea {
 .dropdown {
   display: flex;
   justify-content: space-between;
-  outline: 2px solid var(--black);
+  outline: 2px solid var(--darkblue);
   width: 100%;
-  padding: 15px 0;
+  padding: 15px 3px 15px 5px;
   cursor: pointer;
   max-width: 300px;
 }
@@ -596,12 +598,19 @@ textarea {
   position: absolute;
   width: 100%;
   background-color: var(--white);
-  outline: 3px solid var(--black);
+  outline: 3px solid var(--darkblue);
 }
 
 .dropdown-content ul li {
-  outline: 1px solid var(--black);
+  outline: 1px solid var(--darkblue);
   font-size: 20px;
+  padding: 8px 5px;
+  cursor: pointer;
+  transition: 0.8s;
+}
+
+.dropdown-content ul li:hover {
+  background-color: var(--lightgreen);
 }
 
 .content-spacing {
@@ -625,7 +634,7 @@ textarea {
   margin: auto;
   padding: 20px;
   width: 40%;
-  outline: 3px solid var(--black);
+  outline: 3px solid var(--darkblue);
 }
 
 #modal-heading {
@@ -666,14 +675,14 @@ textarea {
 
 #modal-form .dropdown {
   width: 85%;
-  padding: 9px 0;
+  padding: 9px 5px;
   margin: 0 10px;
-  outline: 1px solid var(--black);
+  outline: 1px solid var(--darkblue);
 }
 
 #modal-form .dropdown-content {
   width: 85%;
-  outline: 1px solid var(--black);
+  outline: 1px solid var(--darkblue);
   margin: 0 10px;
 }
 
@@ -694,20 +703,20 @@ textarea {
     4. SKELETON
 .................................................*/
 #header {
-    width: 100%;
-    background-color: var(--white);
-    border-bottom: 1px solid var(--black);
+  width: 100%;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--darkblue);
 }
 
 #footer {
-  border-top: 1px solid var(--black);
+  border-top: 1px solid var(--darkblue);
 }
 
 /*................................................
     5. HEADER SECTION
 .................................................*/
 #header .flex-box {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 #header .header-logo {
@@ -719,7 +728,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--black);
+  border: 1px solid var(--darkblue);
   padding: 5px 20px;
 }
 
@@ -740,12 +749,12 @@ textarea {
 #format-table-tools {
   justify-content: space-between;
   padding: 20px 0;
-  outline: 3px solid var(--black);
+  outline: 3px solid var(--darkblue);
 }
 
 #format-table-tools .new-employee-icon {
   cursor: pointer;
-  outline: 2px solid var(--black);
+  outline: 2px solid var(--darkblue);
   margin-right: 20px;
   width: 65px;
   padding: 3px;
@@ -757,14 +766,18 @@ textarea {
 }
 
 #list-employee {
-  outline: 3px solid var(--black);
+  outline: 3px solid var(--darkblue);
 }
 
 #list-employee ul li {
   font-size: 20px;
   text-align: center;
   padding: 25px 0;
-  outline: 1px solid var(--black);
+  outline: 1px solid var(--darkblue);
+}
+
+#table-head {
+  cursor: default;
 }
 
 #list-employee .position-id {
@@ -778,6 +791,7 @@ textarea {
 }
 
 #list-employee .position-skill {
+  cursor: pointer;
   width: 45%;
 }
 
@@ -849,7 +863,7 @@ textarea {
   }
 
   #modal-form label {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   #modal-form input[type="text"],
@@ -859,7 +873,7 @@ textarea {
   }
 
   #modal-form .dropdown {
-    padding: 4px 0;
+    padding: 9px 5px;
   }
 
   #modal-form .dropdown-element {
@@ -870,20 +884,117 @@ textarea {
     width: 60%;
   }
 
-}
-
-@media screen and (max-width: 1250px) {
-
-}
-
-@media screen and (max-width: 1025px) {
+  #skill-dropdown {
+    padding-top: 19px;
+    padding-bottom: 19px;
+  }
 
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1250px) {}
 
+@media screen and (max-width: 1025px) {}
+
+@media screen and (max-width: 960px) {}
+
+@media screen and (max-width: 660px) {
+  #table-head {
+    display: none;
+  }
+
+  #list-employee {
+    display: flex;
+    flex-wrap: wrap;
+    outline: 0;
+  }
+
+  #list-employee ul {
+    flex-direction: column;
+    width: 50%;
+    margin: 10px 0;
+    align-items: center;
+    outline: 1px solid var(--darkblue);
+  }
+
+  #list-employee ul li {
+    padding: 15px 0;
+    outline: 0;
+  }
+
+  #list-employee .position-id {
+    width: auto;
+  }
+
+  #list-employee .position-name {
+    width: auto;
+  }
+
+  #list-employee .position-skill {
+    width: auto;
+    word-break: break-word;
+  }
+
+  #list-employee .position-operation {
+    width: auto;
+  }
+
+  #search-sort {
+    width: 75%;
+  }
+
+  .dropdown img {
+    width: 10px;
+  }
+
+  #format-table-tools .new-employee-icon {
+    margin-right: 5px;
+  }
+
+  .dropdown-element {
+    width: 110px;
+  }
+
+  #skill-dropdown {
+    padding: 23px 0;
+  }
+
+  #modal-heading {
+    font-size: 28px;
 }
 
-@media screen and (max-width: 480px) {
+#modal-form .form-item-spacing {
+  flex-direction: column;
+}
 
+#modal-form label {
+  margin-bottom: 5px;
+}
+
+#modal-form input[type="text"], #modal-form input[type="email"] {
+  margin-top: 15px;
+}
+
+#modal-form .dropdown {
+  padding: 9px 5px;
+}
+
+#modal-background {
+  padding-top: 50px;
+}
+
+#modal-form {
+  width: 95%;
+}
+
+#confirmDelete-emp {
+  width: 90%;
+}
+
+#confirm-delete {
+  width: 100px;
+}
+
+#cancel-delete {
+  width: 100px;
+}
 }
