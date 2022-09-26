@@ -1,0 +1,50 @@
+[
+    {
+        "skillId": 1,
+        "skillName": "HTML"
+    },
+    {
+        "skillId": 2,
+        "skillName": "Figma"
+    },
+    {
+        "skillId": 3,
+        "skillName": "CSS"
+    },
+    {
+        "skillId": 4,
+        "skillName": "JS"
+    },
+    {
+        "skillId": 5,
+        "skillName": "Ruby"
+    },
+    {
+        "skillId": 6,
+        "skillName": "Java"
+    },
+    {
+        "skillId": 7,
+        "skillName": "NodeJS"
+    },
+    {
+        "skillId": 8,
+        "skillName": "Python"
+    },
+    {
+        "skillId": 9,
+        "skillName": "Django"
+    },
+    {
+        "skillId": 10,
+        "skillName": "C"
+    },
+    {
+        "skillId": 11,
+        "skillName": "C++"
+    },
+    {
+        "skillId": 12,
+        "skillName": "ReactJS"
+    }
+]
