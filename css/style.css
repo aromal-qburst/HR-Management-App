@@ -780,6 +780,11 @@ textarea {
   cursor: default;
 }
 
+#list-employee #table-head li {
+  font-size: 25px;
+  font-weight: bold;
+}
+
 #list-employee .position-id {
   cursor: pointer;
   width: 15%;
@@ -870,6 +875,7 @@ textarea {
   #modal-form input[type="email"] {
     font-size: 16px;
     padding: 5px 4px;
+    color: var(--darkblue);
   }
 
   #modal-form .dropdown {
@@ -960,41 +966,42 @@ textarea {
 
   #modal-heading {
     font-size: 28px;
-}
+  }
 
-#modal-form .form-item-spacing {
-  flex-direction: column;
-}
+  #modal-form .form-item-spacing {
+    flex-direction: column;
+  }
 
-#modal-form label {
-  margin-bottom: 5px;
-}
+  #modal-form label {
+    margin-bottom: 5px;
+  }
 
-#modal-form input[type="text"], #modal-form input[type="email"] {
-  margin-top: 15px;
-}
+  #modal-form input[type="text"],
+  #modal-form input[type="email"] {
+    margin-top: 15px;
+  }
 
-#modal-form .dropdown {
-  padding: 9px 5px;
-}
+  #modal-form .dropdown {
+    padding: 9px 5px;
+  }
 
-#modal-background {
-  padding-top: 50px;
-}
+  #modal-background {
+    padding-top: 50px;
+  }
 
-#modal-form {
-  width: 95%;
-}
+  #modal-form {
+    width: 95%;
+  }
 
-#confirmDelete-emp {
-  width: 90%;
-}
+  #confirmDelete-emp {
+    width: 90%;
+  }
 
-#confirm-delete {
-  width: 100px;
-}
+  #confirm-delete {
+    width: 100px;
+  }
 
-#cancel-delete {
-  width: 100px;
-}
+  #cancel-delete {
+    width: 100px;
+  }
 }

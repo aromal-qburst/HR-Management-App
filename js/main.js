@@ -11,33 +11,43 @@ const getContent = async function (url) { // Function to fetch JSON data, return
 /*-------START: Employee Data Listing Implementation-------*/
 
 const empDataFetch = getContent('../json/empdata.json')
-    .then((empData) => {
-        const skillList = getContent('../json/skill.json')
-            .then((skillData) => {
-                listEmpDetail(empData, skillData);
-                fillSkillDropdown(skillData);
-            });
+    .then((data) => { // Fetch employee data and store in empData as localstorage
+        localStorage.setItem('empData', JSON.stringify(data));
     });
 
-const listEmpDetail = function (empData,skillData) { // Handle listing of employee in HTML
+const skillList = getContent('../json/skill.json')
+    .then((data) => { // Fetch skill data and store in empData as localstorage
+        localStorage.setItem('skillData', JSON.stringify(data));
+        listEmpDetail();
+        fillSkillDropdown();
+    });
+
+const getSkillNamesFromId = function (empObj) { // Function returns skillNames for given empObj
+    const skillData = JSON.parse(localStorage.getItem('skillData'));
+    return empObj.empSkill.map((skillIdentifier) => { // Return array with employee skill
+        for (let skillObj of skillData) {
+            if (skillObj.skillId == skillIdentifier) {
+                return skillObj.skillName;
+            }
+        }
+    });
+}
+
+const listEmpDetail = function () { // Handle listing of employee in HTML
     const appendEmpData = document.getElementById('list-employee');
-    
+
+    const empData = JSON.parse(localStorage.getItem('empData'));
+
     for (let empObj of empData) {
         let displayEmp = document.createElement('ul');
 
-        let empSkillList = empObj.empSkill.map((skillIdentifier) => { // Return array with employee skill
-            for (let skillObj of skillData) {
-                if (skillObj.skillId == skillIdentifier) {
-                    return skillObj.skillName;
-                }
-            }
-        });
+        let empSkillList = getSkillNamesFromId(empObj);
 
         displayEmp.setAttribute('class', 'flex-box');
         displayEmp.innerHTML = `
-        <li class="position-id" onclick="addUpdateModal(${empObj.empId}, false)">${empObj.empId}</li>
-        <li class="position-name" onclick="addUpdateModal(${empObj.empId}, false)">${empObj.empName}</li>
-        <li class="position-skill" onclick="addUpdateModal(${empObj.empId}, false)">${empSkillList.join(', ')}</li>
+        <li class="position-id" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empId}</li>
+        <li class="position-name" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empName}</li>
+        <li class="position-skill" onclick="addUpdateModal(false, ${empObj.empId})">${empSkillList.join(', ')}</li>
         <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
         `;
 
@@ -49,7 +59,7 @@ const listEmpDetail = function (empData,skillData) { // Handle listing of employ
 
 /*-------START: Update Form Function Implementation-------*/
 
-const fillUpdateForm = function (empId) {
+const fillUpdateClearForm = function (isClear, empId) { // Function fills or clear data in modal
     const empForm = document.getElementById('addUpdate-emp');
     const empName = empForm.querySelector('#emp-name');
     const empMail = empForm.querySelector('#emp-email');
@@ -57,17 +67,28 @@ const fillUpdateForm = function (empId) {
     const empDob = empForm.querySelector('#emp-dob');
     const empSkill = empForm.querySelector('#emp-skill');
 
-    
+    const empData = JSON.parse(localStorage.getItem('empData'));
+    const reqEmpObj = empData.find(empObj => {
+        if (empObj.empId == empId) {
+            return empObj;
+        }
+    });
+
+    empName.value = (isClear) ? '' : `${reqEmpObj.empName}`;
+    empMail.value = (isClear) ? '' : `${reqEmpObj.empEmail}`;
+    empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
+    empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
+    empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj)}`;
 }
 
 /*-------END: Update Form Function Implementation-------*/
 
 /*-------START: Dropdown, Modal Display and Hide Implementation-------*/
 
-const toggleDropdown = function (element) {
+const toggleDropdown = function (element) { // Function to show/hide dropdown and change arrow direction
     const dropdownContent = element.querySelector('.dropdown-content');
     const arrowDirection = element.querySelector('img');
-    
+
     if (dropdownContent.classList.contains('display-none')) {
         arrowDirection.src = 'images/up-arrow.svg';
         dropdownContent.classList.remove('display-none');
@@ -78,7 +99,8 @@ const toggleDropdown = function (element) {
     }
 }
 
-const fillSkillDropdown = function (skillData) {
+const fillSkillDropdown = function () { // Fill skill dropdown with data
+    const skillData = JSON.parse(localStorage.getItem('skillData'));
     const skillDropdowns = document.getElementsByClassName('skill-dropdown-content');
 
     for (let dropdown of skillDropdowns) {
@@ -92,7 +114,7 @@ const fillSkillDropdown = function (skillData) {
     }
 }
 
-const addUpdateModal = function (empId, isAdd) {
+const addUpdateModal = function (isAdd, empId) { // Handle modal on update or add operation
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#addUpdate-emp');
     const modalHeading = modalContent.querySelector('#modal-heading');
@@ -100,12 +122,12 @@ const addUpdateModal = function (empId, isAdd) {
     const formSubmit = modalContent.querySelector('#form-submit');
     const formCancel = modalContent.querySelector('#form-cancel');
 
-    modalHeading.innerText = (isAdd)? 'Add Employee Details': 'Update Employee Details';
-    formSubmit.value = (isAdd)? 'SAVE': 'UPDATE';
+    modalHeading.innerText = (isAdd) ? 'Add Employee Details' : 'Update Employee Details';
+    formSubmit.value = (isAdd) ? 'SAVE' : 'UPDATE';
 
-    // if (!isAdd) {
-    //     fillUpdateForm(empId);
-    // }
+    if (!isAdd) {
+        fillUpdateClearForm(false, empId);
+    }
 
     modalBackground.classList.remove('display-none');
     modalContent.classList.remove('display-none');
@@ -113,13 +135,17 @@ const addUpdateModal = function (empId, isAdd) {
     formCancel.onclick = () => {
         modalContent.classList.add('display-none');
         modalBackground.classList.add('display-none');
-        if (!modalDropdown.querySelector('.display-none')){
+        if (!modalDropdown.querySelector('.display-none')) {
             toggleDropdown(modalDropdown);
+        }
+
+        if (!isAdd) {
+            fillUpdateClearForm(true);
         }
     }
 }
 
-const confirmdeleteOperation = function () {
+const confirmdeleteOperation = function () { // Handle confirm delete option modal
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#confirmDelete-emp');
     const cancelDelete = modalContent.querySelector('#cancel-delete');
