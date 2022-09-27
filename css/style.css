@@ -581,14 +581,14 @@ textarea {
   justify-content: space-between;
   outline: 2px solid var(--darkblue);
   width: 100%;
-  padding: 15px 3px 15px 5px;
+  padding: 15px 5px 15px 5px;
   cursor: pointer;
   max-width: 300px;
   border-radius: 8px;
 }
 
 .dropdown img {
-  width: 25px;
+  width: 17px;
 }
 
 .dropdown span {
@@ -672,6 +672,7 @@ textarea {
 #modal-form input[type="email"] {
   font-size: 17px;
   padding: 10px 14px;
+  color: var(--darkblue);
 }
 
 #modal-form .dropdown-element {
@@ -781,13 +782,10 @@ textarea {
   outline: 1px solid var(--darkblue);
 }
 
-#table-head {
-  cursor: default;
-}
-
 #list-employee #table-head li {
   font-size: 25px;
   font-weight: bold;
+  cursor: default;
 }
 
 #list-employee .position-id {
@@ -826,6 +824,11 @@ textarea {
 
 #confirmDelete-emp button {
   margin: 0 10px;
+}
+
+#placeholder-image {
+  display: block;
+  margin: auto;
 }
 
 /*................................................
@@ -884,7 +887,6 @@ textarea {
   #modal-form input[type="email"] {
     font-size: 16px;
     padding: 5px 4px;
-    color: var(--darkblue);
   }
 
   #modal-form .dropdown {
@@ -910,7 +912,17 @@ textarea {
 
 @media screen and (max-width: 1025px) {}
 
-@media screen and (max-width: 960px) {}
+@media screen and (max-width: 960px) {
+  .dropdown {
+    padding: 22px 5px 22px 5px;
+  }
+
+  #skill-dropdown {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+}
 
 @media screen and (max-width: 660px) {
   #table-head {
@@ -925,7 +937,7 @@ textarea {
 
   #list-employee ul {
     flex-direction: column;
-    width: 50%;
+    width: 100%;
     margin: 10px 0;
     align-items: center;
     outline: 1px solid var(--darkblue);

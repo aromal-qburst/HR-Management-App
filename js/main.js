@@ -15,9 +15,13 @@ const empDataFetch = getContent('/json/empdata.json')
         localStorage.setItem('empData', JSON.stringify(data));
     });
 
-const skillList = getContent('/json/skill.json')
+const skillListFetch = getContent('/json/skill.json')
     .then((data) => { // Fetch skill data and store in empData as localstorage
         localStorage.setItem('skillData', JSON.stringify(data));
+    });
+
+Promise.all([empDataFetch, skillListFetch])
+    .then((data) => {
         listEmpDetail();
         fillSkillDropdown();
     });
@@ -35,8 +39,11 @@ const getSkillNamesFromId = function (empObj) { // Function returns skillNames f
 
 const listEmpDetail = function () { // Handle listing of employee in HTML
     const appendEmpData = document.getElementById('list-employee');
+    const removePlaceholderImage = appendEmpData.querySelector('#placeholder-image');
 
     const empData = JSON.parse(localStorage.getItem('empData'));
+
+    removePlaceholderImage.style.display = 'none';
 
     for (let empObj of empData) {
         let displayEmp = document.createElement('ul');
