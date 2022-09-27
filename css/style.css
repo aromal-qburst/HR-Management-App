@@ -584,6 +584,7 @@ textarea {
   padding: 15px 3px 15px 5px;
   cursor: pointer;
   max-width: 300px;
+  border-radius: 8px;
 }
 
 .dropdown img {
@@ -598,15 +599,19 @@ textarea {
   position: absolute;
   width: 100%;
   background-color: var(--white);
-  outline: 3px solid var(--darkblue);
+  outline: 2px solid var(--darkblue);
 }
 
 .dropdown-content ul li {
-  outline: 1px solid var(--darkblue);
+  border-bottom: 1px solid var(--darkblue);
   font-size: 20px;
   padding: 8px 5px;
   cursor: pointer;
   transition: 0.8s;
+}
+
+.dropdown-content ul li:last-child {
+  border-bottom: 0;
 }
 
 .dropdown-content ul li:hover {
@@ -849,6 +854,10 @@ textarea {
 
   .dropdown span {
     font-size: 15px;
+  }
+
+  .dropdown img {
+    width: 17px;
   }
 
   .dropdown-content ul li {
