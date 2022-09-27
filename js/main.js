@@ -10,12 +10,12 @@ const getContent = async function (url) { // Function to fetch JSON data, return
 
 /*-------START: Employee Data Listing Implementation-------*/
 
-const empDataFetch = getContent('../json/empdata.json')
+const empDataFetch = getContent('/json/empdata.json')
     .then((data) => { // Fetch employee data and store in empData as localstorage
         localStorage.setItem('empData', JSON.stringify(data));
     });
 
-const skillList = getContent('../json/skill.json')
+const skillList = getContent('/json/skill.json')
     .then((data) => { // Fetch skill data and store in empData as localstorage
         localStorage.setItem('skillData', JSON.stringify(data));
         listEmpDetail();
@@ -30,7 +30,7 @@ const getSkillNamesFromId = function (empObj) { // Function returns skillNames f
                 return skillObj.skillName;
             }
         }
-    });
+    }).join(', ');
 }
 
 const listEmpDetail = function () { // Handle listing of employee in HTML
@@ -47,7 +47,7 @@ const listEmpDetail = function () { // Handle listing of employee in HTML
         displayEmp.innerHTML = `
         <li class="position-id" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empId}</li>
         <li class="position-name" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empName}</li>
-        <li class="position-skill" onclick="addUpdateModal(false, ${empObj.empId})">${empSkillList.join(', ')}</li>
+        <li class="position-skill" onclick="addUpdateModal(false, ${empObj.empId})">${empSkillList}</li>
         <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
         `;
 
