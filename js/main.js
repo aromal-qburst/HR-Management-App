@@ -50,7 +50,7 @@ const listEmpDetail = function () { // Handle listing of employee in HTML
 
         let empSkillList = getSkillNamesFromId(empObj);
 
-        displayEmp.setAttribute('class', 'flex-box');
+        displayEmp.setAttribute('class', 'flex-box table-data');
         displayEmp.innerHTML = `
         <li class="position-id" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empId}</li>
         <li class="position-name" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empName}</li>
@@ -152,10 +152,10 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     }
 
     formSubmit.onclick = () => {
-        modalContent.classList.add('display-none');
-        modalBackground.classList.add('display-none');
-        if (isAdd) {
-            addEmpToList();
+        if (isAdd && validateInput()) {
+            generateNewEmpObj();
+            modalContent.classList.add('display-none');
+            modalBackground.classList.add('display-none');
         }
     }
 }
@@ -178,7 +178,7 @@ const confirmdeleteOperation = function () { // Handle confirm delete option mod
 
 /*-------START: Add, Update, Delete Employee Implementation-------*/
 
-const addEmpToList = function () { // Function converts new employee data into object
+const generateNewEmpObj = function () { // Function converts new employee data into object
     const empData = JSON.parse(localStorage.getItem('empData'));
 
     const empId = empData[0].empId + (empData.length);
@@ -199,6 +199,27 @@ const addEmpToList = function () { // Function converts new employee data into o
 
     empData.push(newEmpObj);
     localStorage.setItem('empData', JSON.stringify(empData));
+
+    removeEmpDetail();
+    listEmpDetail();
+}
+
+const removeEmpDetail = function (removeAll) { // Function remove all employee data and set placeholder image
+    const entireTable = document.getElementById('list-employee');
+
+    entireTable.querySelectorAll('.table-data').forEach(empRow => empRow.remove());
+
+    entireTable.querySelector('#placeholder-image').style.display = 'block';
+}
+
+const validateInput = function () {
+    const empName = document.querySelector('#emp-name').value;
+    const empMail = document.querySelector('#emp-email').value;
+
+    return (
+        ( empName != '' ) &&
+        ( empMail != '' )
+    )? true : false;
 }
 
 /*-------END: Add, Update, Delete Employee Implementation-------*/
