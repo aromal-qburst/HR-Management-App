@@ -10,12 +10,12 @@ const getContent = async function (url) { // Function to fetch JSON data, return
 
 /*-------START: Employee Data Listing Implementation-------*/
 
-const empDataFetch = getContent('/json/empdata.json')
+const empDataFetch = getContent('json/empdata.json')
     .then((data) => { // Fetch employee data and store in empData as localstorage
         localStorage.setItem('empData', JSON.stringify(data));
     });
 
-const skillListFetch = getContent('/json/skill.json')
+const skillListFetch = getContent('json/skill.json')
     .then((data) => { // Fetch skill data and store in empData as localstorage
         localStorage.setItem('skillData', JSON.stringify(data));
     });
