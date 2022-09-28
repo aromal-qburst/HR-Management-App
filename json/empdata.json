@@ -1,0 +1,65 @@
+[
+    {
+        "empId": 1001,
+        "empName": "Amanda Duncan",
+        "empDob": "25-01-2022",
+        "empMob": 8815533635,
+        "empEmail": "amandaduncan@example.com",
+        "empDesignation": "Sr Architect",
+        "empSkill": [
+            1,
+            9,
+            6,
+            12
+        ]
+    },
+    {
+        "empId": 1002,
+        "empName": "Clayton Branch",
+        "empDob": "03-07-2015",
+        "empMob": 9252709203,
+        "empEmail": "claytonbranch@example.com",
+        "empDesignation": "Jr Architect",
+        "empSkill": [
+            3,
+            4,
+            5
+        ]
+    },
+    {
+        "empId": 1003,
+        "empName": "Angeline Jolie",
+        "empDob": "01-02-2017",
+        "empMob": 8989651167,
+        "empEmail": "angelinejolie@example.com",
+        "empDesignation": "Jr Architect",
+        "empSkill": [
+            10,
+            1,
+            9
+        ]
+    },
+    {
+        "empId": 1004,
+        "empName": "Grimes Morales",
+        "empDob": "04-11-2014",
+        "empMob": 1124109921,
+        "empEmail": "grimesmorales@example.com",
+        "empDesignation": "Jr Developer",
+        "empSkill": [
+            11
+        ]
+    },
+    {
+        "empId": 1005,
+        "empName": "Pitts Barrett",
+        "empDob": "11-11-2017",
+        "empMob": 7791942387,
+        "empEmail": "pittsbarrett@example.com",
+        "empDesignation": "Sr Developer",
+        "empSkill": [
+            12,
+            6
+        ]
+    }
+]
