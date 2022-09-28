@@ -954,20 +954,20 @@ textarea {
   }
 
   #list-employee .position-id {
-    width: auto;
+    width: 100%;
   }
 
   #list-employee .position-name {
-    width: auto;
+    width: 100%;
   }
 
   #list-employee .position-skill {
-    width: auto;
+    width: 100%;
     word-break: break-word;
   }
 
   #list-employee .position-operation {
-    width: auto;
+    width: 100%;
   }
 
   #search-sort {
