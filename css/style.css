@@ -829,6 +829,7 @@ textarea {
 #placeholder-image {
   display: block;
   margin: auto;
+  width: 50px;
 }
 
 /*................................................
@@ -1028,9 +1029,5 @@ textarea {
 
   #cancel-delete {
     width: 100px;
-  }
-
-  #placeholder-image {
-    width: 200px;
   }
 }
