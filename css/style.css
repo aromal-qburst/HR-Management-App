@@ -762,7 +762,7 @@ textarea {
   cursor: pointer;
   outline: 2px solid var(--darkblue);
   margin-right: 20px;
-  width: 65px;
+  width: 85px;
   padding: 3px;
 }
 
@@ -980,7 +980,6 @@ textarea {
 
   #format-table-tools .new-employee-icon {
     margin-right: 5px;
-    width: 85px;
   }
 
   .dropdown-element {

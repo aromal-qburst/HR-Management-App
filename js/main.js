@@ -150,6 +150,14 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             fillUpdateClearForm(true);
         }
     }
+
+    formSubmit.onclick = () => {
+        modalContent.classList.add('display-none');
+        modalBackground.classList.add('display-none');
+        if (isAdd) {
+            addEmpToList();
+        }
+    }
 }
 
 const confirmdeleteOperation = function () { // Handle confirm delete option modal
@@ -167,3 +175,30 @@ const confirmdeleteOperation = function () { // Handle confirm delete option mod
 }
 
 /*-------END: Dropdown, Modal Display and Hide Implementation-------*/
+
+/*-------START: Add, Update, Delete Employee Implementation-------*/
+
+const addEmpToList = function () { // Function converts new employee data into object
+    const empData = JSON.parse(localStorage.getItem('empData'));
+
+    const empId = empData[0].empId + (empData.length);
+    const empName = document.querySelector('#emp-name').value;
+    const empMail = document.querySelector('#emp-email').value;
+    const empDesignation = document.querySelector('#emp-designation').value;
+    const empDob = document.querySelector('#emp-dob').value;
+    const empSkill = document.querySelector('#emp-skill').value.split(', ');
+
+    const newEmpObj = {
+        empId,
+        empName,
+        empMail,
+        empDesignation,
+        empDob,
+        empSkill
+    };
+
+    empData.push(newEmpObj);
+    localStorage.setItem('empData', JSON.stringify(empData));
+}
+
+/*-------END: Add, Update, Delete Employee Implementation-------*/
