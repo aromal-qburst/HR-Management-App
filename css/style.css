@@ -867,6 +867,10 @@ textarea {
     font-size: 17px;
   }
 
+  #modal-background {
+    padding-top: 100px;
+  }
+
   .modal {
     width: 95%;
   }
@@ -902,8 +906,13 @@ textarea {
   }
 
   #skill-dropdown {
-    padding-top: 19px;
-    padding-bottom: 19px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .dropdown {
+    padding-top: 22px;
+    padding-bottom: 22px;
   }
 
 }
@@ -1024,5 +1033,9 @@ textarea {
 
   #cancel-delete {
     width: 100px;
+  }
+
+  #placeholder-image {
+    width: 200px;
   }
 }
