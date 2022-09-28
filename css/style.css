@@ -926,11 +926,6 @@ textarea {
     padding: 22px 5px 22px 5px;
   }
 
-  #skill-dropdown {
-    padding-top: 22px;
-    padding-bottom: 22px;
-  }
-
 }
 
 @media screen and (max-width: 660px) {
@@ -991,7 +986,7 @@ textarea {
   }
 
   #skill-dropdown {
-    padding: 23px 0;
+    padding: 31px 5px;
   }
 
   #modal-heading {
