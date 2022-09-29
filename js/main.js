@@ -51,11 +51,12 @@ const listEmpDetail = function () { // Handle listing of employee in HTML
         let empSkillList = getSkillNamesFromId(empObj);
 
         displayEmp.setAttribute('class', 'flex-box table-data');
+        displayEmp.setAttribute('id', `${empObj.empId}`)
         displayEmp.innerHTML = `
         <li class="position-id" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empId}</li>
         <li class="position-name" onclick="addUpdateModal(false, ${empObj.empId})">${empObj.empName}</li>
         <li class="position-skill" onclick="addUpdateModal(false, ${empObj.empId})">${empSkillList}</li>
-        <li class="position-operation" onclick="confirmdeleteOperation()"><img src="images/remove-employee.png" alt="Delete row of table"></li>
+        <li class="position-operation" onclick="confirmdeleteOperation(this)"><img src="images/remove-employee.png" alt="Delete row of table"></li>
         `;
 
         appendEmpData.appendChild(displayEmp);
@@ -132,10 +133,6 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     modalHeading.innerText = (isAdd) ? 'Add Employee Details' : 'Update Employee Details';
     formSubmit.value = (isAdd) ? 'SAVE' : 'UPDATE';
 
-    if (!isAdd) {
-        fillUpdateClearForm(false, empId);
-    }
-
     modalBackground.classList.remove('display-none');
     modalContent.classList.remove('display-none');
 
@@ -151,24 +148,44 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         }
     }
 
-    formSubmit.onclick = () => {
-        if (isAdd && validateInput()) {
-            generateNewEmpObj();
-            modalContent.classList.add('display-none');
-            modalBackground.classList.add('display-none');
+    if (!isAdd) {
+        fillUpdateClearForm(false, empId);
+        formSubmit.onclick = () => {
+            if (validateInput()) {
+                generateUpdateEmpObj(false, empId);
+                modalContent.classList.add('display-none');
+                modalBackground.classList.add('display-none');
+            }
+        }
+    }
+    else {
+        formSubmit.onclick = () => {
+            if (validateInput()) {
+                generateUpdateEmpObj(true);
+                modalContent.classList.add('display-none');
+                modalBackground.classList.add('display-none');
+                fillUpdateClearForm(true);
+            }
         }
     }
 }
 
-const confirmdeleteOperation = function () { // Handle confirm delete option modal
+const confirmdeleteOperation = function (empDeleteIcon) { // Handle confirm delete option modal
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#confirmDelete-emp');
     const cancelDelete = modalContent.querySelector('#cancel-delete');
+    const confirmDelete = modalContent.querySelector('#confirm-delete');
 
     modalBackground.classList.remove('display-none');
     modalContent.classList.replace('display-none', 'flex-box');
 
     cancelDelete.onclick = () => {
+        modalContent.classList.replace('flex-box', 'display-none');
+        modalBackground.classList.add('display-none');
+    }
+
+    confirmDelete.onclick = () => {
+        removeEmpDetail(false, empDeleteIcon);
         modalContent.classList.replace('flex-box', 'display-none');
         modalBackground.classList.add('display-none');
     }
@@ -178,41 +195,73 @@ const confirmdeleteOperation = function () { // Handle confirm delete option mod
 
 /*-------START: Add, Update, Delete Employee Implementation-------*/
 
-const generateNewEmpObj = function () { // Function converts new employee data into object
+const generateUpdateEmpObj = function (createNew, empId) { // Function updates/create employee data into object
     const empData = JSON.parse(localStorage.getItem('empData'));
-
-    const empId = empData[0].empId + (empData.length);
     const empName = document.querySelector('#emp-name').value;
     const empMail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
     const empSkill = document.querySelector('#emp-skill').value.split(', ');
 
-    const newEmpObj = {
-        empId,
-        empName,
-        empMail,
-        empDesignation,
-        empDob,
-        empSkill
-    };
+    if (createNew) {
+        const empId = empData[empData.length - 1].empId + 1;
 
-    empData.push(newEmpObj);
-    localStorage.setItem('empData', JSON.stringify(empData));
 
-    removeEmpDetail();
+        const newEmpObj = {
+            empId,
+            empName,
+            empMail,
+            empDesignation,
+            empDob,
+            empSkill
+        };
+    
+        empData.push(newEmpObj);
+        localStorage.setItem('empData', JSON.stringify(empData));
+    }
+    else {
+        const reqEmpObj = empData.find(empObj => {
+            if (empObj.empId == empId) {
+                return empObj;
+            }
+        });
+
+        reqEmpObj.empName = empName;
+        reqEmpObj.empEmail = empMail;
+        reqEmpObj.empDesignation = empDesignation;
+        reqEmpObj.empDob = empDob;
+        reqEmpObj.empSkill = empSkill;
+
+        console.log(reqEmpObj);
+
+        localStorage.setItem('empData', JSON.stringify(empData));
+    }
+
+    removeEmpDetail(true);
     listEmpDetail();
 }
 
-const removeEmpDetail = function (removeAll) { // Function remove all employee data and set placeholder image
+const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove all/individual employee data and set placeholder image
+    if (removeAll) {
     const entireTable = document.getElementById('list-employee');
 
     entireTable.querySelectorAll('.table-data').forEach(empRow => empRow.remove());
 
     entireTable.querySelector('#placeholder-image').style.display = 'block';
+    }
+    else {
+        const empData = JSON.parse(localStorage.getItem('empData'));
+        const deleteParent = deleteEmpList.parentNode;
+        const empId = deleteParent.id;
+        deleteParent.remove();
+
+        const reqData = empData.filter(empObj => empObj.empId != empId);
+
+        localStorage.setItem('empData', JSON.stringify(reqData));
+    }
 }
 
-const validateInput = function () {
+const validateInput = function () { // Basic validation of data
     const empName = document.querySelector('#emp-name').value;
     const empMail = document.querySelector('#emp-email').value;
 
