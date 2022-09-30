@@ -115,6 +115,7 @@ const fillSkillDropdown = function () { // Fill skill dropdown with data
         let groupSkill = document.createElement('ul');
         for (let skillObj of skillData) {
             let individualSkill = document.createElement('li');
+            individualSkill.setAttribute('data-skillid', `id-${skillObj.skillId}`);
             individualSkill.innerHTML = `${skillObj.skillName}`;
             groupSkill.appendChild(individualSkill);
         }
@@ -126,6 +127,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#addUpdate-emp');
     const modalHeading = modalContent.querySelector('#modal-heading');
+    const skillDropdown = modalContent.querySelector('#addUpdate-skill-dropdown');
     const modalDropdown = modalContent.querySelector('.dropdown-element');
     const formSubmit = modalContent.querySelector('#form-submit');
     const formCancel = modalContent.querySelector('#form-cancel');
@@ -135,6 +137,21 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
 
     modalBackground.classList.remove('display-none');
     modalContent.classList.remove('display-none');
+
+    skillDropdown.onclick = (event) => {
+        if (event.target.dataset.skillid.startsWith('id-')) {
+            const skillInputTag = document.getElementById('emp-skill');
+            const skillName = event.target.innerText;
+            const skillInput = document.getElementById('emp-skill').value.split(', ');
+
+            console.log(skillName);
+
+            skillInput.push(skillName);
+            console.log(skillInput);
+
+            skillInputTag.value = skillInput.join(', ');
+        }
+    }
 
     formCancel.onclick = () => {
         modalContent.classList.add('display-none');
@@ -205,7 +222,6 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
     if (createNew) {
         const empId = empData[empData.length - 1].empId + 1;
-
 
         const newEmpObj = {
             empId,
