@@ -832,6 +832,11 @@ textarea {
   width: 50px;
 }
 
+#addUpdate-skill-dropdown ul {
+  max-height: 145px;
+  overflow: auto;
+}
+
 /*................................................
     7. FOOTER SECTION
 .................................................*/
@@ -873,7 +878,7 @@ textarea {
   }
 
   .modal {
-    width: 95%;
+    width: 40%;
   }
 
   #modal-heading {
@@ -918,13 +923,25 @@ textarea {
 
 }
 
-@media screen and (max-width: 1250px) {}
+@media screen and (max-width: 1848px) {
+  .modal {
+    width: 55%;
+  }
+}
 
-@media screen and (max-width: 1025px) {}
+@media screen and (max-width: 1370px) {
+  .modal {
+    width: 80%;
+  }
+}
 
 @media screen and (max-width: 960px) {
   .dropdown {
     padding: 22px 5px 22px 5px;
+  }
+
+  .modal {
+    width: 90%;
   }
 
 }
