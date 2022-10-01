@@ -26,9 +26,9 @@ Promise.all([empDataFetch, skillListFetch])
         fillSkillDropdown();
     });
 
-const getSkillNamesFromId = function (empObj) { // Function returns skillNames for given empObj
+const getSkillNamesFromId = function (empSkill) { // Function returns skillNames for given empObj
     const skillData = JSON.parse(localStorage.getItem('skillData'));
-    return empObj.empSkill.map((skillIdentifier) => { // Return array with employee skill
+    return empSkill.map((skillIdentifier) => { // Return array with employee skill
         for (let skillObj of skillData) {
             if (skillObj.skillId == skillIdentifier) {
                 return skillObj.skillName;
@@ -48,7 +48,7 @@ const listEmpDetail = function () { // Handle listing of employee in HTML
     for (let empObj of empData) {
         let displayEmp = document.createElement('ul');
 
-        let empSkillList = getSkillNamesFromId(empObj);
+        let empSkillList = getSkillNamesFromId(empObj.empSkill);
 
         displayEmp.setAttribute('class', 'flex-box table-data');
         displayEmp.setAttribute('id', `${empObj.empId}`)
@@ -86,7 +86,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empMail.value = (isClear) ? '' : `${reqEmpObj.empEmail}`;
     empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
     empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
-    empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj)}`;
+    empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
 }
 
 /*-------END: Update Form Function Implementation-------*/
@@ -142,12 +142,15 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         if (event.target.dataset.skillid.startsWith('id-')) {
             const skillInputTag = document.getElementById('emp-skill');
             const skillName = event.target.innerText;
-            const skillInput = document.getElementById('emp-skill').value.split(', ');
-
-            console.log(skillName);
+            let skillInput = document.getElementById('emp-skill').value.split(', ');
 
             skillInput.push(skillName);
-            console.log(skillInput);
+
+            if (skillInput[0] == '') {
+                skillInput.shift()
+            }
+
+            skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
 
             skillInputTag.value = skillInput.join(', ');
         }
@@ -172,6 +175,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
                 generateUpdateEmpObj(false, empId);
                 modalContent.classList.add('display-none');
                 modalBackground.classList.add('display-none');
+                fillUpdateClearForm(true);
             }
         }
     }
@@ -215,10 +219,32 @@ const confirmdeleteOperation = function (empDeleteIcon) { // Handle confirm dele
 const generateUpdateEmpObj = function (createNew, empId) { // Function updates/create employee data into object
     const empData = JSON.parse(localStorage.getItem('empData'));
     const empName = document.querySelector('#emp-name').value;
-    const empMail = document.querySelector('#emp-email').value;
+    const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    const empSkill = document.querySelector('#emp-skill').value.split(', ');
+    const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
+    const skillData = JSON.parse(localStorage.getItem('skillData'));
+
+    /* FIND ERROR IN THIS CODE
+    const empSkill = empSkillNames.filter(val => {
+        let reqSkillId = skillData.find(skillObj => {
+            if (skillObj.skillName == val) {
+                return skillObj.skillId;
+            }
+        });
+        console.log(reqSkillId.skillId);
+        return reqSkillId;
+    });
+    */
+
+    const empSkill = [];
+    empSkillNames.forEach(val => {
+        for (let skillObj of skillData) {
+            if (skillObj.skillName == val) {
+                empSkill.push(skillObj.skillId);
+            }
+        }
+    });
 
     if (createNew) {
         const empId = empData[empData.length - 1].empId + 1;
@@ -226,14 +252,13 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
         const newEmpObj = {
             empId,
             empName,
-            empMail,
+            empEmail,
             empDesignation,
             empDob,
             empSkill
         };
-    
+
         empData.push(newEmpObj);
-        localStorage.setItem('empData', JSON.stringify(empData));
     }
     else {
         const reqEmpObj = empData.find(empObj => {
@@ -243,15 +268,13 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
         });
 
         reqEmpObj.empName = empName;
-        reqEmpObj.empEmail = empMail;
+        reqEmpObj.empEmail = empEmail;
         reqEmpObj.empDesignation = empDesignation;
         reqEmpObj.empDob = empDob;
         reqEmpObj.empSkill = empSkill;
 
-        console.log(reqEmpObj);
-
-        localStorage.setItem('empData', JSON.stringify(empData));
     }
+    localStorage.setItem('empData', JSON.stringify(empData));
 
     removeEmpDetail(true);
     listEmpDetail();
@@ -259,11 +282,11 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
 const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove all/individual employee data and set placeholder image
     if (removeAll) {
-    const entireTable = document.getElementById('list-employee');
+        const entireTable = document.getElementById('list-employee');
 
-    entireTable.querySelectorAll('.table-data').forEach(empRow => empRow.remove());
+        entireTable.querySelectorAll('.table-data').forEach(empRow => empRow.remove());
 
-    entireTable.querySelector('#placeholder-image').style.display = 'block';
+        entireTable.querySelector('#placeholder-image').style.display = 'block';
     }
     else {
         const empData = JSON.parse(localStorage.getItem('empData'));
@@ -282,9 +305,9 @@ const validateInput = function () { // Basic validation of data
     const empMail = document.querySelector('#emp-email').value;
 
     return (
-        ( empName != '' ) &&
-        ( empMail != '' )
-    )? true : false;
+        (empName != '') &&
+        (empMail != '')
+    ) ? true : false;
 }
 
 /*-------END: Add, Update, Delete Employee Implementation-------*/
