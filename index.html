@@ -66,7 +66,10 @@
         </div>
         <div id="modal-background" class="display-none">
             <div id="addUpdate-emp" class="modal container display-none">
-                <strong id="modal-heading" class="content-spacing"></strong>
+                <div class="position-heading-close">
+                    <strong id="modal-heading" class="content-spacing"></strong>
+                    <img id="form-cancel" src="images/close.svg" alt="Close Icon">
+                </div>
                 <form id="modal-form" action="">
                     <div class="form-item-spacing flex-box">
                         <label for="emp-name">Employee Name : </label>
@@ -86,18 +89,17 @@
                     </div>
                     <div class="form-item-spacing flex-box">
                         <label for="emp-skill">Employee Skills : </label>
+                        <input type="text" id="emp-skill" value="">
                         <div class="dropdown-element" onclick="toggleDropdown(this)">
                             <div class="dropdown">
                                 <span>Skill</span>
                                 <img src="images/down-arrow.svg" alt="dropdown icon">
                             </div>
-                            <div class="dropdown-content skill-dropdown-content display-none">
+                            <div id="addUpdate-skill-dropdown" class="dropdown-content skill-dropdown-content display-none">
                             </div>
                         </div>
-                        <input type="text" id="emp-skill" value="">
                     </div>
                     <div class="flex-box">
-                        <button id="form-cancel" type="button" class="cancel-btn">CANCEL</button>
                         <input id="form-submit" class="submit-btn" type="button">
                     </div>
                 </form>
@@ -106,8 +108,8 @@
                 <img class="form-item-spacing" src="images/confirm-delete.png" alt="Confirm delete icon">
                 <strong class="form-item-spacing">Are you sure you want to delete this row?</strong>
                 <div>
-                    <button id="cancel-delete" class="cancel-btn">NO</button>
-                    <button id="confirm-delete" class="submit-btn">YES</button>
+                    <button id="cancel-delete" class="submit-btn">NO</button>
+                    <button id="confirm-delete" class="cancel-btn">YES</button>
                 </div>
             </div>
         </div>

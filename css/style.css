@@ -642,6 +642,17 @@ textarea {
   outline: 3px solid var(--darkblue);
 }
 
+.position-heading-close {
+  position: relative;
+}
+
+.position-heading-close img {
+  cursor: pointer;
+  position: absolute;
+  top: 20px;
+  right: 0;
+}
+
 #modal-heading {
   display: block;
   text-align: center;
@@ -650,14 +661,8 @@ textarea {
 }
 
 #modal-form {
-  display: flex;
-  flex-direction: column;
   width: 60%;
   margin: auto;
-}
-
-#modal-form .flex-box {
-  justify-content: space-between;
 }
 
 .form-item-spacing {
@@ -666,6 +671,8 @@ textarea {
 
 #modal-form label {
   font-size: 25px;
+  display: block;
+  min-width: 200px;
 }
 
 #modal-form input[type="text"],
@@ -690,6 +697,10 @@ textarea {
   width: 85%;
   outline: 1px solid var(--darkblue);
   margin: 0 10px;
+}
+
+#form-submit {
+  margin: auto;
 }
 
 .cancel-btn {
@@ -833,7 +844,7 @@ textarea {
 }
 
 #addUpdate-skill-dropdown ul {
-  max-height: 145px;
+  max-height: 200px;
   overflow: auto;
 }
 
