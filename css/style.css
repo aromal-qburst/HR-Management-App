@@ -558,7 +558,7 @@ textarea {
     3. COMMON CSS CLASSES
 .................................................*/
 .container {
-  max-width: 85vw;
+  max-width: 1500px;
   margin: 15px auto;
   padding: 0 20px;
 }
@@ -1034,28 +1034,30 @@ textarea {
   }
 
   #modal-heading {
-    font-size: 28px;
+    font-size: 25px;
+    margin-top: 30px;
+  }
+
+  .position-heading-close img {
+    top: -35px;
   }
 
   #modal-form .form-item-spacing {
     flex-direction: column;
   }
 
-  #modal-form label {
-    margin-bottom: 5px;
-  }
-
   #modal-form input[type="text"],
   #modal-form input[type="email"] {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   #modal-form .dropdown {
     padding: 9px 5px;
+    margin-top: 10px;
   }
 
   #modal-background {
-    padding-top: 50px;
+    padding-top: 25px;
   }
 
   #modal-form {
@@ -1072,5 +1074,13 @@ textarea {
 
   #cancel-delete {
     width: 100px;
+  }
+
+  .align-input-textbox {
+    flex-direction: column;
+  }
+
+  .validation-error {
+    margin: 0;
   }
 }

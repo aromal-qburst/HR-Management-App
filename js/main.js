@@ -163,16 +163,13 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         if (!modalDropdown.querySelector('.display-none')) {
             toggleDropdown(modalDropdown);
         }
-
-        if (!isAdd) {
-            fillUpdateClearForm(true);
-        }
+        fillUpdateClearForm(true);
     }
 
-    const displayErrorMessage = (validationErrorStatus) => {
+    const displayErrorMessage = (isClear, validationErrorStatus) => {
         const displayErrorSection = document.querySelectorAll('.validation-error');
         displayErrorSection.forEach((val, index) => {
-            if (validationErrorStatus[index] == 1) {
+            if (!isClear && validationErrorStatus[index] == 1) {
                 val.innerHTML = `<span>!Invalid Input!</span>`;
             }
             else {
@@ -186,10 +183,9 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         formSubmit.onclick = () => {
             const validationErrorStatus = validateInput();
             if (validationErrorStatus.some(checkValue => checkValue !== 0)) {
-                displayErrorMessage(validationErrorStatus);
+                displayErrorMessage(false, validationErrorStatus);
             }
             else {
-                displayErrorMessage(validationErrorStatus);
                 generateUpdateEmpObj(false, empId);
                 modalContent.classList.add('display-none');
                 modalBackground.classList.add('display-none');
@@ -201,10 +197,9 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         formSubmit.onclick = () => {
             const validationErrorStatus = validateInput();
             if (validationErrorStatus.some(checkValue => checkValue !== 0)) {
-                displayErrorMessage(validationErrorStatus);
+                displayErrorMessage(false, validationErrorStatus);
             }
             else {
-                displayErrorMessage(validationErrorStatus);
                 generateUpdateEmpObj(true);
                 modalContent.classList.add('display-none');
                 modalBackground.classList.add('display-none');
@@ -212,6 +207,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             }
         }
     }
+    displayErrorMessage(true);
 }
 
 const confirmdeleteOperation = function (empDeleteIcon) { // Handle confirm delete option modal
