@@ -558,7 +558,7 @@ textarea {
     3. COMMON CSS CLASSES
 .................................................*/
 .container {
-  max-width: 1500px;
+  max-width: 85vw;
   margin: 15px auto;
   padding: 0 20px;
 }
@@ -667,6 +667,11 @@ textarea {
 
 .form-item-spacing {
   padding-bottom: 30px;
+  flex-direction: column;
+}
+
+.align-input-textbox {
+  display: flex;
 }
 
 #modal-form label {
@@ -714,6 +719,12 @@ textarea {
   padding: 15px 33px;
   color: var(--white);
   background-color: var(--green);
+}
+
+.validation-error {
+  color: var(--red);
+  margin-left: 200px;
+  margin-top: 10px;
 }
 
 /*................................................
@@ -846,6 +857,10 @@ textarea {
 #addUpdate-skill-dropdown ul {
   max-height: 200px;
   overflow: auto;
+}
+
+#select-employee-skills {
+  flex-direction: row;
 }
 
 /*................................................

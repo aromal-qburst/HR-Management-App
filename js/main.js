@@ -171,12 +171,16 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     if (!isAdd) {
         fillUpdateClearForm(false, empId);
         formSubmit.onclick = () => {
-            if (validateInput()) {
-                generateUpdateEmpObj(false, empId);
-                modalContent.classList.add('display-none');
-                modalBackground.classList.add('display-none');
-                fillUpdateClearForm(true);
-            }
+            // const validationStatus = validateInput();
+            // if (!Array.isArray(validationStatus)) {
+            //     generateUpdateEmpObj(false, empId);
+            //     modalContent.classList.add('display-none');
+            //     modalBackground.classList.add('display-none');
+            //     fillUpdateClearForm(true);
+            // }
+            // else {
+                
+            // }
         }
     }
     else {
@@ -224,18 +228,6 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empDob = document.querySelector('#emp-dob').value;
     const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
-
-    /* FIND ERROR IN THIS CODE
-    const empSkill = empSkillNames.filter(val => {
-        let reqSkillId = skillData.find(skillObj => {
-            if (skillObj.skillName == val) {
-                return skillObj.skillId;
-            }
-        });
-        console.log(reqSkillId.skillId);
-        return reqSkillId;
-    });
-    */
 
     const empSkill = [];
     empSkillNames.forEach(val => {
@@ -303,14 +295,31 @@ const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove
     }
 }
 
-const validateInput = function () { // Basic validation of data
+const validateInput = function () { // Basic Name, Email, DoB validation of data
     const empName = document.querySelector('#emp-name').value;
-    const empMail = document.querySelector('#emp-email').value;
+    const empEmail = document.querySelector('#emp-email').value;
+    const empDob = document.querySelector('#emp-dob').value;
 
-    return (
-        (empName != '') &&
-        (empMail != '')
-    ) ? true : false;
+    const validationErrors = [];
+    const nameRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
+    const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
+    const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
+    
+    const validateRegex = (regexPatternObj, text) => {
+        if (regexPatternObj.test(text)) {
+            validationErrors.push(0);
+        }
+        else {
+            validationErrors.push(1);
+        }
+    }
+
+    validateRegex(nameRegex, empName);
+    validateRegex(emailRegex, empEmail);
+    validateRegex(dobRegex, empDob);
+
+    return validationErrors;
+
 }
 
 /*-------END: Add, Update, Delete Employee Implementation-------*/
