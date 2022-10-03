@@ -153,6 +153,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
 
             skillInputTag.value = skillInput.join(', ');
+            skillInputTag.focus();
         }
     }
 
@@ -168,24 +169,42 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         }
     }
 
+    const displayErrorMessage = (validationErrorStatus) => {
+        const displayErrorSection = document.querySelectorAll('.validation-error');
+        displayErrorSection.forEach((val, index) => {
+            if (validationErrorStatus[index] == 1) {
+                val.innerHTML = `<span>!Invalid Input!</span>`;
+            }
+            else {
+                val.innerHTML = ``;
+            }
+        });
+    }
+
     if (!isAdd) {
         fillUpdateClearForm(false, empId);
         formSubmit.onclick = () => {
-            // const validationStatus = validateInput();
-            // if (!Array.isArray(validationStatus)) {
-            //     generateUpdateEmpObj(false, empId);
-            //     modalContent.classList.add('display-none');
-            //     modalBackground.classList.add('display-none');
-            //     fillUpdateClearForm(true);
-            // }
-            // else {
-                
-            // }
+            const validationErrorStatus = validateInput();
+            if (validationErrorStatus.some(checkValue => checkValue !== 0)) {
+                displayErrorMessage(validationErrorStatus);
+            }
+            else {
+                displayErrorMessage(validationErrorStatus);
+                generateUpdateEmpObj(false, empId);
+                modalContent.classList.add('display-none');
+                modalBackground.classList.add('display-none');
+                fillUpdateClearForm(true);
+            }
         }
     }
     else {
         formSubmit.onclick = () => {
-            if (validateInput()) {
+            const validationErrorStatus = validateInput();
+            if (validationErrorStatus.some(checkValue => checkValue !== 0)) {
+                displayErrorMessage(validationErrorStatus);
+            }
+            else {
+                displayErrorMessage(validationErrorStatus);
                 generateUpdateEmpObj(true);
                 modalContent.classList.add('display-none');
                 modalBackground.classList.add('display-none');
@@ -240,7 +259,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
     if (createNew) {
         let empId = 1001;
-        if (empData.length > 0){
+        if (empData.length > 0) {
             empId = empData[empData.length - 1].empId + 1;
         }
 
@@ -298,13 +317,16 @@ const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove
 const validateInput = function () { // Basic Name, Email, DoB validation of data
     const empName = document.querySelector('#emp-name').value;
     const empEmail = document.querySelector('#emp-email').value;
+    const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
+    const empSkill = document.querySelector('#emp-skill').value;
 
     const validationErrors = [];
     const nameRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
     const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
-    
+    const matchAnyRegex = new RegExp(/(.*?)/);
+
     const validateRegex = (regexPatternObj, text) => {
         if (regexPatternObj.test(text)) {
             validationErrors.push(0);
@@ -316,7 +338,9 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
 
     validateRegex(nameRegex, empName);
     validateRegex(emailRegex, empEmail);
+    validateRegex(matchAnyRegex, empDesignation);
     validateRegex(dobRegex, empDob);
+    validateRegex(matchAnyRegex, empSkill);
 
     return validationErrors;
 
