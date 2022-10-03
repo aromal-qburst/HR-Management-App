@@ -247,7 +247,10 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     });
 
     if (createNew) {
-        const empId = empData[empData.length - 1].empId + 1;
+        let empId = 1001;
+        if (empData.length > 0){
+            empId = empData[empData.length - 1].empId + 1;
+        }
 
         const newEmpObj = {
             empId,
