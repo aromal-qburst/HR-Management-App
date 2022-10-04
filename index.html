@@ -39,15 +39,15 @@
                 </div>
                 <div class="dropdown-element" onclick="toggleDropdown(this)">
                     <div id="sort-dropdown" class="dropdown">
-                        <span>Employee ID (Low > High)</span>
+                        <span id="sort-dropdown-head">Employee ID (Low > High)</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
                     </div>
                     <div id="sort-dropdown-content" class="dropdown-content display-none">
                         <ul>
-                            <li>Employee ID (Low > High)</li>
-                            <li>Employee ID (High > Low)</li>
-                            <li>Employee Name (A > Z)</li>
-                            <li>Employee Name (Z > A)</li>
+                            <li onclick="sortEmployeeData(true, true)">Employee ID (Low > High)</li>
+                            <li onclick="sortEmployeeData(true, false)">Employee ID (High > Low)</li>
+                            <li onclick="sortEmployeeData(false, true)">Employee Name (A > Z)</li>
+                            <li onclick="sortEmployeeData(false, false)">Employee Name (Z > A)</li>
                         </ul>
                     </div>
                 </div>
@@ -92,7 +92,8 @@
                             <label for="emp-designation">Designation : </label>
                             <input type="text" id="emp-designation" value="">
                         </div>
-                        <div data-error-name="Employee designation" id="validation-error-designation" class="validation-error">
+                        <div data-error-name="Employee designation" id="validation-error-designation"
+                            class="validation-error">
                         </div>
                     </div>
                     <div class="form-item-spacing flex-box">
