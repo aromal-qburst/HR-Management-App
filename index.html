@@ -60,45 +60,68 @@
                 <li class="position-id">Employee ID</li>
                 <li class="position-name">Employee Name</li>
                 <li class="position-skill">Employee Skills</li>
-                <li class="position-operation">Operations</li>
+                <li class="position-operation">Actions</li>
             </ul>
             <img id="placeholder-image" src="images/loading-image.gif" alt="Loading Data">
         </div>
         <div id="modal-background" class="display-none">
             <div id="addUpdate-emp" class="modal container display-none">
-                <strong id="modal-heading" class="content-spacing"></strong>
+                <div class="position-heading-close">
+                    <strong id="modal-heading" class="content-spacing"></strong>
+                    <img id="form-cancel" src="images/close.svg" alt="Close Icon">
+                </div>
                 <form id="modal-form" action="">
                     <div class="form-item-spacing flex-box">
-                        <label for="emp-name">Employee Name : </label>
-                        <input type="text" id="emp-name">
+                        <div class="align-input-textbox">
+                            <label for="emp-name">Employee Name : </label>
+                            <input type="text" id="emp-name" value="">
+                        </div>
+                        <div data-error-name="Employee name" id="validation-error-name" class="validation-error">
+                        </div>
                     </div>
                     <div class="form-item-spacing flex-box">
-                        <label for="emp-email">Employee Email : </label>
-                        <input type="email" id="emp-email">
+                        <div class="align-input-textbox">
+                            <label for="emp-email">Employee Email : </label>
+                            <input type="email" id="emp-email" value="">
+                        </div>
+                        <div data-error-name="Employee email" id="validation-error-email" class="validation-error">
+                        </div>
                     </div>
                     <div class="form-item-spacing flex-box">
-                        <label for="emp-designation">Designation : </label>
-                        <input type="text" id="emp-designation">
+                        <div class="align-input-textbox">
+                            <label for="emp-designation">Designation : </label>
+                            <input type="text" id="emp-designation" value="">
+                        </div>
+                        <div data-error-name="Employee designation" id="validation-error-designation" class="validation-error">
+                        </div>
                     </div>
                     <div class="form-item-spacing flex-box">
-                        <label for="emp-dob">Employee DoB : </label>
-                        <input type="text" id="emp-dob">
+                        <div class="align-input-textbox">
+                            <label for="emp-dob">Employee DoB : </label>
+                            <input type="text" id="emp-dob" value="">
+                        </div>
+                        <div data-error-name="Employee DoB" id="validation-error-dob" class="validation-error">
+                        </div>
                     </div>
-                    <div class="form-item-spacing flex-box">
-                        <label for="emp-skill">Employee Skills : </label>
-                        <div class="dropdown-element" onclick="toggleDropdown(this)">
-                            <div class="dropdown">
-                                <span>Skill</span>
-                                <img src="images/down-arrow.svg" alt="dropdown icon">
-                            </div>
-                            <div class="dropdown-content skill-dropdown-content display-none">
+                    <div id="select-employee-skills" class="form-item-spacing flex-box">
+                        <div class="align-input-textbox">
+                            <label for="emp-skill">Employee Skills : </label>
+                            <input type="text" id="emp-skill" value="">
+                            <div class="dropdown-element" onclick="toggleDropdown(this)">
+                                <div class="dropdown">
+                                    <span>Skill</span>
+                                    <img src="images/down-arrow.svg" alt="dropdown icon">
+                                </div>
+                                <div id="addUpdate-skill-dropdown"
+                                    class="dropdown-content skill-dropdown-content display-none">
+                                </div>
                             </div>
                         </div>
-                        <input type="text" id="emp-skill">
+                        <div data-error-name="Employee skills" id="validation-error-skills" class="validation-error">
+                        </div>
                     </div>
                     <div class="flex-box">
-                        <button id="form-cancel" type="button" class="cancel-btn">CANCEL</button>
-                        <input id="form-submit" class="submit-btn" type="submit">
+                        <input id="form-submit" class="submit-btn" type="button">
                     </div>
                 </form>
             </div>
@@ -106,8 +129,8 @@
                 <img class="form-item-spacing" src="images/confirm-delete.png" alt="Confirm delete icon">
                 <strong class="form-item-spacing">Are you sure you want to delete this row?</strong>
                 <div>
-                    <button id="cancel-delete" class="cancel-btn">NO</button>
-                    <button id="confirm-delete" class="submit-btn">YES</button>
+                    <button id="cancel-delete" class="submit-btn">NO</button>
+                    <button id="confirm-delete" class="cancel-btn">YES</button>
                 </div>
             </div>
         </div>

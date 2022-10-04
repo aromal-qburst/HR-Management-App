@@ -640,6 +640,14 @@ textarea {
   padding: 20px;
   width: 40%;
   outline: 3px solid var(--darkblue);
+  position: relative;
+}
+
+.position-heading-close img {
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 #modal-heading {
@@ -650,22 +658,23 @@ textarea {
 }
 
 #modal-form {
-  display: flex;
-  flex-direction: column;
   width: 60%;
   margin: auto;
 }
 
-#modal-form .flex-box {
-  justify-content: space-between;
-}
-
 .form-item-spacing {
   padding-bottom: 30px;
+  flex-direction: column;
+}
+
+.align-input-textbox {
+  display: flex;
 }
 
 #modal-form label {
   font-size: 25px;
+  display: block;
+  min-width: 200px;
 }
 
 #modal-form input[type="text"],
@@ -692,6 +701,10 @@ textarea {
   margin: 0 10px;
 }
 
+#form-submit {
+  margin: auto;
+}
+
 .cancel-btn {
   width: 140px;
   color: var(--white);
@@ -703,6 +716,12 @@ textarea {
   padding: 15px 33px;
   color: var(--white);
   background-color: var(--green);
+}
+
+.validation-error {
+  color: var(--red);
+  margin-left: 200px;
+  margin-top: 10px;
 }
 
 /*................................................
@@ -762,7 +781,7 @@ textarea {
   cursor: pointer;
   outline: 2px solid var(--darkblue);
   margin-right: 20px;
-  width: 65px;
+  width: 85px;
   padding: 3px;
 }
 
@@ -832,6 +851,11 @@ textarea {
   width: 50px;
 }
 
+#addUpdate-skill-dropdown ul {
+  max-height: 200px;
+  overflow: auto;
+}
+
 /*................................................
     7. FOOTER SECTION
 .................................................*/
@@ -869,11 +893,11 @@ textarea {
   }
 
   #modal-background {
-    padding-top: 100px;
+    padding-top: 65px;
   }
 
   .modal {
-    width: 95%;
+    width: 40%;
   }
 
   #modal-heading {
@@ -918,13 +942,25 @@ textarea {
 
 }
 
-@media screen and (max-width: 1250px) {}
+@media screen and (max-width: 1848px) {
+  .modal {
+    width: 55%;
+  }
+}
 
-@media screen and (max-width: 1025px) {}
+@media screen and (max-width: 1370px) {
+  .modal {
+    width: 80%;
+  }
+}
 
 @media screen and (max-width: 960px) {
   .dropdown {
     padding: 22px 5px 22px 5px;
+  }
+
+  .modal {
+    width: 90%;
   }
 
 }
@@ -980,7 +1016,6 @@ textarea {
 
   #format-table-tools .new-employee-icon {
     margin-right: 5px;
-    width: 85px;
   }
 
   .dropdown-element {
@@ -992,28 +1027,26 @@ textarea {
   }
 
   #modal-heading {
-    font-size: 28px;
+    font-size: 25px;
+    margin-top: 30px;
   }
 
   #modal-form .form-item-spacing {
     flex-direction: column;
   }
 
-  #modal-form label {
-    margin-bottom: 5px;
-  }
-
   #modal-form input[type="text"],
   #modal-form input[type="email"] {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 
   #modal-form .dropdown {
     padding: 9px 5px;
+    margin-top: 10px;
   }
 
   #modal-background {
-    padding-top: 50px;
+    padding-top: 25px;
   }
 
   #modal-form {
@@ -1030,5 +1063,13 @@ textarea {
 
   #cancel-delete {
     width: 100px;
+  }
+
+  .align-input-textbox {
+    flex-direction: column;
+  }
+
+  .validation-error {
+    margin: 0;
   }
 }
