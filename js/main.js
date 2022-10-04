@@ -89,6 +89,13 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
 }
 
+const clearInputBox = function (spanTag) { // Function clears input box of invalid input
+    const spanParent = spanTag.parentNode;
+    const spanParentSibling = spanParent.previousElementSibling;
+    const inputBox = spanParentSibling.querySelector('input');
+    inputBox.value = ``;
+}
+
 /*-------END: Update Form Function Implementation-------*/
 
 /*-------START: Dropdown, Modal Display and Hide Implementation-------*/
@@ -170,7 +177,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         const displayErrorSection = document.querySelectorAll('.validation-error');
         displayErrorSection.forEach((val, index) => {
             if (!isClear && validationErrorStatus[index] == 1) {
-                val.innerHTML = `<span>!Invalid Input!</span>`;
+                val.innerHTML = `<span onclick="clearInputBox(this)">Invalid Input</span>`;
             }
             else {
                 val.innerHTML = ``;
@@ -318,10 +325,10 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
     const empSkill = document.querySelector('#emp-skill').value;
 
     const validationErrors = [];
-    const nameRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
     const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
-    const matchAnyRegex = new RegExp(/(.*?)/);
+    const stringSpaceRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
+    const stringSymobolRegex = new RegExp(/^[a-zA-Z ,+]{1,50}$/);
 
     const validateRegex = (regexPatternObj, text) => {
         if (regexPatternObj.test(text)) {
@@ -332,11 +339,11 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
         }
     }
 
-    validateRegex(nameRegex, empName);
+    validateRegex(stringSpaceRegex, empName);
     validateRegex(emailRegex, empEmail);
-    validateRegex(matchAnyRegex, empDesignation);
+    validateRegex(stringSpaceRegex, empDesignation);
     validateRegex(dobRegex, empDob);
-    validateRegex(matchAnyRegex, empSkill);
+    validateRegex(stringSymobolRegex, empSkill);
 
     return validationErrors;
 

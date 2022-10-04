@@ -640,17 +640,14 @@ textarea {
   padding: 20px;
   width: 40%;
   outline: 3px solid var(--darkblue);
-}
-
-.position-heading-close {
   position: relative;
 }
 
 .position-heading-close img {
   cursor: pointer;
   position: absolute;
-  top: 20px;
-  right: 0;
+  top: 10px;
+  right: 10px;
 }
 
 #modal-heading {
@@ -859,10 +856,6 @@ textarea {
   overflow: auto;
 }
 
-#select-employee-skills {
-  flex-direction: row;
-}
-
 /*................................................
     7. FOOTER SECTION
 .................................................*/
@@ -900,7 +893,7 @@ textarea {
   }
 
   #modal-background {
-    padding-top: 100px;
+    padding-top: 65px;
   }
 
   .modal {
@@ -1036,10 +1029,6 @@ textarea {
   #modal-heading {
     font-size: 25px;
     margin-top: 30px;
-  }
-
-  .position-heading-close img {
-    top: -35px;
   }
 
   #modal-form .form-item-spacing {
