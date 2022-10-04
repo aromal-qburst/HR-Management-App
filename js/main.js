@@ -89,13 +89,6 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
 }
 
-const clearInputBox = function (spanTag) { // Function clears input box of invalid input
-    const spanParent = spanTag.parentNode;
-    const spanParentSibling = spanParent.previousElementSibling;
-    const inputBox = spanParentSibling.querySelector('input');
-    inputBox.value = ``;
-}
-
 /*-------END: Update Form Function Implementation-------*/
 
 /*-------START: Dropdown, Modal Display and Hide Implementation-------*/
@@ -149,13 +142,10 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         if (event.target.dataset.skillid.startsWith('id-')) {
             const skillInputTag = document.getElementById('emp-skill');
             const skillName = event.target.innerText;
-            let skillInput = document.getElementById('emp-skill').value.split(', ');
+            let skillInput = document.getElementById('emp-skill').value;
 
+            skillInput = (skillInput)? skillInput.split(', '): [];
             skillInput.push(skillName);
-
-            if (skillInput[0] == '') {
-                skillInput.shift()
-            }
 
             skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
 
@@ -174,10 +164,10 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     }
 
     const displayErrorMessage = (isClear, validationErrorStatus) => {
-        const displayErrorSection = document.querySelectorAll('.validation-error');
-        displayErrorSection.forEach((val, index) => {
+        const displayErrorSections = document.querySelectorAll('.validation-error');
+        displayErrorSections.forEach((val, index) => {
             if (!isClear && validationErrorStatus[index] == 1) {
-                val.innerHTML = `<span onclick="clearInputBox(this)">Invalid Input</span>`;
+                val.innerHTML = `<span>${val.dataset.errorName} is  not valid</span>`;
             }
             else {
                 val.innerHTML = ``;
