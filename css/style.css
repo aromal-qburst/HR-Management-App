@@ -544,8 +544,8 @@ textarea {
   --white: #fff;
   --darkblue: #0c4b7e;
   --gray: #fefefe;
-  --red: #ff0000;
-  --green: #00FF00;
+  --red: #d34848;
+  --green: #249524;
   --lightgreen: #68bd45;
 }
 
@@ -559,7 +559,7 @@ textarea {
 .................................................*/
 .container {
   max-width: 1500px;
-  margin: 15px auto;
+  margin: 10px auto;
   padding: 0 20px;
 }
 
@@ -742,10 +742,11 @@ textarea {
 .................................................*/
 #header .flex-box {
   justify-content: space-between;
+  align-items: center;
 }
 
 #header .header-logo {
-  width: 130px;
+  width: 105px;
 }
 
 #header .arrange-admin {
@@ -754,11 +755,11 @@ textarea {
   flex-direction: column;
   align-items: center;
   border: 1px solid var(--darkblue);
-  padding: 5px 20px;
+  padding: 4px 10px;
 }
 
 #header .arrange-admin img {
-  width: 50px;
+  width: 40px;
 }
 
 /*................................................
@@ -767,12 +768,13 @@ textarea {
 #main .content-heading {
   font-size: 40px;
   text-align: center;
-  margin: 40px 0;
+  margin: 35px 0;
   text-decoration: underline;
 }
 
 #format-table-tools {
   justify-content: space-between;
+  align-items: center;
   padding: 20px 0;
   outline: 3px solid var(--darkblue);
 }
