@@ -685,20 +685,6 @@ textarea {
   color: var(--darkblue);
 }
 
-#skill-display-section {
-  width: 220px;
-  border: 1px solid var(--darkgray);
-  display: flex;
-  padding: 7px 0;
-}
-
-#skill-display-section li {
-  background-color: var(--darkblue);
-  padding: 3px;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
 #modal-form .dropdown-element {
   width: 150px;
 }
@@ -871,6 +857,35 @@ textarea {
 #addUpdate-skill-dropdown ul {
   max-height: 200px;
   overflow: auto;
+}
+
+#skill-display-section {
+  width: 207px;
+  height: 70px;
+  border: 1px solid var(--darkgray);
+  font-size: 16px;
+  padding: 5px 4px;
+  overflow: auto;
+}
+
+#skill-display-section::after {
+  content: '\0000a0';
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+}
+
+.skill-closebtn {
+  padding-left: 5px;
+  color: var(--black);
+  font-weight: bold;
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 /*................................................

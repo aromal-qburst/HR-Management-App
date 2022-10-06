@@ -56,6 +56,24 @@ const listEmpDetail = function (filtered = false) { // Handle listing of employe
     }
 };
 
+const generateSkillChips = function (empSkill) { // Function returns required skill chips in HTML syntax
+    const empSkillNames = getSkillNamesFromId(empSkill).split(', ');
+    const displaySkillSection = document.createElement('div');
+
+    for (let skillName of empSkillNames) {
+        let chipContainer = document.createElement('div');
+        chipContainer.setAttribute('class', 'chip');
+        chipContainer.setAttribute('contenteditable', 'false');
+        chipContainer.innerHTML = `
+        <span class="skill-heading">${skillName}</span>
+        <span class="skill-closebtn" onclick="this.parentElement.remove()">&times;</span>
+        `;
+        displaySkillSection.appendChild(chipContainer);
+    }
+
+    return displaySkillSection.innerHTML;
+};
+
 const getSkillNamesFromId = function (empSkill) { // Function returns skillNames for given empObj
     const skillData = JSON.parse(localStorage.getItem('skillData'));
     return empSkill.map((skillIdentifier) => { // Return array with employee skill
@@ -77,7 +95,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     const empMail = empForm.querySelector('#emp-email');
     const empDesignation = empForm.querySelector('#emp-designation');
     const empDob = empForm.querySelector('#emp-dob');
-    const empSkill = empForm.querySelector('#emp-skill');
+    const empSkill = empForm.querySelector('#skill-display-section');
 
     const empData = JSON.parse(localStorage.getItem('empData'));
     const reqEmpObj = empData.find(empObj => {
@@ -90,7 +108,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empMail.value = (isClear) ? '' : `${reqEmpObj.empEmail}`;
     empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
     empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
-    // empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
+    empSkill.innerHTML = (isClear) ? '' : `${generateSkillChips(reqEmpObj.empSkill)}`;
 };
 
 /*-------END: Update Form Function Implementation-------*/
@@ -131,8 +149,6 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#addUpdate-emp');
     const modalHeading = modalContent.querySelector('#modal-heading');
-    const skillDropdown = modalContent.querySelector('#addUpdate-skill-dropdown');
-    const modalDropdown = modalContent.querySelector('.dropdown-element');
     const formSubmit = modalContent.querySelector('#form-submit');
     const formCancel = modalContent.querySelector('#form-cancel');
 
@@ -142,28 +158,9 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     modalBackground.classList.remove('display-none');
     modalContent.classList.remove('display-none');
 
-    skillDropdown.onclick = (event) => {
-        if (event.target.dataset.skillid.startsWith('id-')) {
-            //const skillInputTag = document.getElementById('emp-skill');
-            const skillName = event.target.innerText;
-            let skillInput = document.getElementById('emp-skill').value;
-
-            skillInput = (skillInput) ? skillInput.split(', ') : [];
-            skillInput.push(skillName);
-
-            skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
-
-            //skillInputTag.value = skillInput.join(', ');
-            //skillInputTag.focus();
-        }
-    };
-
     formCancel.onclick = () => {
         modalContent.classList.add('display-none');
         modalBackground.classList.add('display-none');
-        if (!modalDropdown.querySelector('.display-none')) {
-            toggleDropdown(modalDropdown);
-        }
         fillUpdateClearForm(true);
     };
 
@@ -242,13 +239,13 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    //const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
+    const empSkillNames = document.querySelectorAll('.skill-heading');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
 
     const empSkill = [];
-    empSkillNames.forEach(val => { // change
+    empSkillNames.forEach(val => {
         for (let skillObj of skillData) {
-            if (skillObj.skillName == val) {
+            if (skillObj.skillName == val.innerText) {
                 empSkill.push(skillObj.skillId);
             }
         }
@@ -324,7 +321,6 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    const empSkill = document.querySelector('#emp-skill').value;
 
     const validationErrors = [];
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
@@ -345,7 +341,6 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     validateRegex(emailRegex, empEmail);
     validateRegex(stringSpaceRegex, empDesignation);
     validateRegex(dobRegex, empDob);
-    validateRegex(stringSymobolRegex, empSkill);
 
     return validationErrors;
 
