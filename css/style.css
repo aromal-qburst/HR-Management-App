@@ -544,6 +544,7 @@ textarea {
   --white: #fff;
   --darkblue: #0c4b7e;
   --gray: #fefefe;
+  --darkgray: #767676;
   --red: #d34848;
   --green: #249524;
   --lightgreen: #68bd45;
@@ -682,6 +683,20 @@ textarea {
   font-size: 17px;
   padding: 10px 14px;
   color: var(--darkblue);
+}
+
+#skill-display-section {
+  width: 220px;
+  border: 1px solid var(--darkgray);
+  display: flex;
+  padding: 7px 0;
+}
+
+#skill-display-section li {
+  background-color: var(--darkblue);
+  padding: 3px;
+  border-radius: 15px;
+  cursor: pointer;
 }
 
 #modal-form .dropdown-element {
@@ -907,7 +922,7 @@ textarea {
   }
 
   #modal-form {
-    width: 70%;
+    width: 55%;
   }
 
   #modal-form label {

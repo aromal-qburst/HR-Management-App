@@ -90,7 +90,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empMail.value = (isClear) ? '' : `${reqEmpObj.empEmail}`;
     empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
     empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
-    empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
+    // empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
 };
 
 /*-------END: Update Form Function Implementation-------*/
@@ -144,7 +144,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
 
     skillDropdown.onclick = (event) => {
         if (event.target.dataset.skillid.startsWith('id-')) {
-            const skillInputTag = document.getElementById('emp-skill');
+            //const skillInputTag = document.getElementById('emp-skill');
             const skillName = event.target.innerText;
             let skillInput = document.getElementById('emp-skill').value;
 
@@ -153,8 +153,8 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
 
             skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
 
-            skillInputTag.value = skillInput.join(', ');
-            skillInputTag.focus();
+            //skillInputTag.value = skillInput.join(', ');
+            //skillInputTag.focus();
         }
     };
 
@@ -242,11 +242,11 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
+    //const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
 
     const empSkill = [];
-    empSkillNames.forEach(val => {
+    empSkillNames.forEach(val => { // change
         for (let skillObj of skillData) {
             if (skillObj.skillName == val) {
                 empSkill.push(skillObj.skillId);
