@@ -324,15 +324,24 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
+    const empSkill = document.querySelector('#skill-display-section');
 
     const validationErrors = [];
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
     const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
     const stringSpaceRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
-    const stringSymobolRegex = new RegExp(/^[a-zA-Z ,+]{1,100}$/);
 
     const validateRegex = (regexPatternObj, text) => {
         if (regexPatternObj.test(text)) {
+            validationErrors.push(0);
+        }
+        else {
+            validationErrors.push(1);
+        }
+    };
+
+    const skillPresent = (skillTag) => {
+        if (skillTag.querySelector('div')) {
             validationErrors.push(0);
         }
         else {
@@ -344,6 +353,7 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     validateRegex(emailRegex, empEmail);
     validateRegex(stringSpaceRegex, empDesignation);
     validateRegex(dobRegex, empDob);
+    skillPresent(empSkill);
 
     return validationErrors;
 

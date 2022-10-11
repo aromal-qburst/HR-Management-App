@@ -526,6 +526,8 @@ textarea {
   --red: #d34848;
   --green: #249524;
   --lightgreen: #68bd45;
+  --lightblue: #9db3c5;
+  --highgray: #e5d5d5;
 }
 
 /*................................................
@@ -594,7 +596,7 @@ textarea {
 }
 
 .dropdown-content ul li:hover {
-  background-color: var(--lightgreen);
+  background-color: var(--lightblue);
 }
 
 .content-spacing {
@@ -848,7 +850,7 @@ textarea {
   border-bottom: none;
   border-top: none;
   z-index: 2;
-  width: 207px;
+  width: 253px;
   top: 100%;
   background-color: var(--white);
 }
@@ -860,16 +862,16 @@ textarea {
 }
 
 .autocomplete-items div:hover {
-  background-color: var(--gray);
+  background-color: var(--highgray);
 }
 
 #skill-autocomplete .autocomplete-active {
-  background-color: var(--darkblue);
+  background-color: var(--lightblue);
   color: var(--white);
 }
 
 #skill-display-section {
-  width: 207px;
+  width: 253px;
   height: 70px;
   border: 1px solid var(--darkgray);
   font-size: 16px;
@@ -973,6 +975,14 @@ textarea {
 
   #confirmDelete-emp {
     width: 60%;
+  }
+
+  #skill-display-section {
+    width: 207px;
+  }
+
+  .autocomplete-items {
+    width: 207px;
   }
 
   #skill-dropdown {
