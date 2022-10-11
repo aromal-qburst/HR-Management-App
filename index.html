@@ -39,15 +39,15 @@
                 </div>
                 <div class="dropdown-element" onclick="toggleDropdown(this)">
                     <div id="sort-dropdown" class="dropdown">
-                        <span id="sort-dropdown-head" data-sort-option="1, 1">Employee ID (Low > High)</span>
+                        <span id="sort-dropdown-head" data-sort-option="id-asc">Employee ID (Low > High)</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
                     </div>
                     <div id="sort-dropdown-content" class="dropdown-content display-none">
                         <ul>
-                            <li onclick="sortEmployeeData(true, true)">Employee ID (Low > High)</li>
-                            <li onclick="sortEmployeeData(true, false)">Employee ID (High > Low)</li>
-                            <li onclick="sortEmployeeData(false, true)">Employee Name (A > Z)</li>
-                            <li onclick="sortEmployeeData(false, false)">Employee Name (Z > A)</li>
+                            <li onclick="sortEmployeeData('id-asc')">Employee ID (Low > High)</li>
+                            <li onclick="sortEmployeeData('id-dec')">Employee ID (High > Low)</li>
+                            <li onclick="sortEmployeeData('name-asc')">Employee Name (A > Z)</li>
+                            <li onclick="sortEmployeeData('name-dec')">Employee Name (Z > A)</li>
                         </ul>
                     </div>
                 </div>
