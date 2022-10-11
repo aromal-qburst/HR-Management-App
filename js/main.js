@@ -117,8 +117,9 @@ const fillSkillDropdown = function () { // Fill skill dropdown with data
 
     for (let dropdown of skillDropdowns) {
         let groupSkill = document.createElement('ul');
+        groupSkill.innerHTML = '<li data-skillid="none">None</li>';
         for (let skillObj of skillData) {
-            let individualSkill = document.createElement('li');
+            individualSkill = document.createElement('li');
             individualSkill.setAttribute('data-skillid', `id-${skillObj.skillId}`);
             individualSkill.innerHTML = `${skillObj.skillName}`;
             groupSkill.appendChild(individualSkill);
@@ -435,6 +436,11 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
             localStorage.setItem('empFilterData', JSON.stringify(filteredSkillCollection));
             removeEmpDetail(true);
             listEmpDetail(true);
+        }
+        else {
+            removeEmpDetail(true);
+            console.log(JSON.parse(localStorage.getItem('empData')));
+            listEmpDetail();
         }
     };
 };
