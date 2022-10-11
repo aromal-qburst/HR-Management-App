@@ -4,7 +4,7 @@ const getContent = async function (url) { // Function to fetch JSON data, return
     const response = await fetch(url);
     const data = await response.json();
     return data;
-}
+};
 
 /*-------END: JSON Fetch Implementation-------*/
 
@@ -21,27 +21,20 @@ const skillListFetch = getContent('json/skill.json')
     });
 
 Promise.all([empDataFetch, skillListFetch])
-    .then((data) => {
+    .then((data) => { // Ensure function call only after given promises are achieved
+        localStorage.removeItem('empFilterData');
         listEmpDetail();
         fillSkillDropdown();
     });
 
-const getSkillNamesFromId = function (empSkill) { // Function returns skillNames for given empObj
-    const skillData = JSON.parse(localStorage.getItem('skillData'));
-    return empSkill.map((skillIdentifier) => { // Return array with employee skill
-        for (let skillObj of skillData) {
-            if (skillObj.skillId == skillIdentifier) {
-                return skillObj.skillName;
-            }
-        }
-    }).join(', ');
-}
-
-const listEmpDetail = function () { // Handle listing of employee in HTML
+const listEmpDetail = function (filtered = false) { // Handle listing of employee in HTML
     const appendEmpData = document.getElementById('list-employee');
     const removePlaceholderImage = appendEmpData.querySelector('#placeholder-image');
+    const filterDropdownText = document.getElementById('skill-dropdown').querySelector('span');
 
-    const empData = JSON.parse(localStorage.getItem('empData'));
+    const empData = (filtered)
+        ? JSON.parse(localStorage.getItem('empFilterData'))
+        : JSON.parse(localStorage.getItem('empData'));
 
     removePlaceholderImage.style.display = 'none';
 
@@ -61,7 +54,18 @@ const listEmpDetail = function () { // Handle listing of employee in HTML
 
         appendEmpData.appendChild(displayEmp);
     }
-}
+};
+
+const getSkillNamesFromId = function (empSkill) { // Function returns skillNames for given empObj
+    const skillData = JSON.parse(localStorage.getItem('skillData'));
+    return empSkill.map((skillIdentifier) => { // Return array with employee skill
+        for (let skillObj of skillData) {
+            if (skillObj.skillId == skillIdentifier) {
+                return skillObj.skillName;
+            }
+        }
+    }).join(', ');
+};
 
 /*-------END: Employee Data Listing Implementation-------*/
 
@@ -87,7 +91,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
     empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
     empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
-}
+};
 
 /*-------END: Update Form Function Implementation-------*/
 
@@ -105,7 +109,7 @@ const toggleDropdown = function (element) { // Function to show/hide dropdown an
         arrowDirection.src = 'images/down-arrow.svg';
         dropdownContent.classList.add('display-none');
     }
-}
+};
 
 const fillSkillDropdown = function () { // Fill skill dropdown with data
     const skillData = JSON.parse(localStorage.getItem('skillData'));
@@ -113,15 +117,16 @@ const fillSkillDropdown = function () { // Fill skill dropdown with data
 
     for (let dropdown of skillDropdowns) {
         let groupSkill = document.createElement('ul');
+        groupSkill.innerHTML = '<li data-skillid="none">None</li>';
         for (let skillObj of skillData) {
-            let individualSkill = document.createElement('li');
+            individualSkill = document.createElement('li');
             individualSkill.setAttribute('data-skillid', `id-${skillObj.skillId}`);
             individualSkill.innerHTML = `${skillObj.skillName}`;
             groupSkill.appendChild(individualSkill);
         }
         dropdown.appendChild(groupSkill);
     }
-}
+};
 
 const addUpdateModal = function (isAdd, empId) { // Handle modal on update or add operation
     const modalBackground = document.getElementById('modal-background');
@@ -144,7 +149,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             const skillName = event.target.innerText;
             let skillInput = document.getElementById('emp-skill').value;
 
-            skillInput = (skillInput)? skillInput.split(', '): [];
+            skillInput = (skillInput) ? skillInput.split(', ') : [];
             skillInput.push(skillName);
 
             skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
@@ -152,7 +157,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             skillInputTag.value = skillInput.join(', ');
             skillInputTag.focus();
         }
-    }
+    };
 
     formCancel.onclick = () => {
         modalContent.classList.add('display-none');
@@ -161,7 +166,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             toggleDropdown(modalDropdown);
         }
         fillUpdateClearForm(true);
-    }
+    };
 
     const displayErrorMessage = (isClear, validationErrorStatus) => {
         const displayErrorSections = document.querySelectorAll('.validation-error');
@@ -173,7 +178,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
                 val.innerHTML = ``;
             }
         });
-    }
+    };
 
     if (!isAdd) {
         fillUpdateClearForm(false, empId);
@@ -205,7 +210,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
         }
     }
     displayErrorMessage(true);
-}
+};
 
 const confirmdeleteOperation = function (empDeleteIcon) { // Handle confirm delete option modal
     const modalBackground = document.getElementById('modal-background');
@@ -219,14 +224,14 @@ const confirmdeleteOperation = function (empDeleteIcon) { // Handle confirm dele
     cancelDelete.onclick = () => {
         modalContent.classList.replace('flex-box', 'display-none');
         modalBackground.classList.add('display-none');
-    }
+    };
 
     confirmDelete.onclick = () => {
         removeEmpDetail(false, empDeleteIcon);
         modalContent.classList.replace('flex-box', 'display-none');
         modalBackground.classList.add('display-none');
-    }
-}
+    };
+};
 
 /*-------END: Dropdown, Modal Display and Hide Implementation-------*/
 
@@ -251,9 +256,11 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     });
 
     if (createNew) {
+        const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption.split(', ');
         let empId = 1001;
         if (empData.length > 0) {
-            empId = empData[empData.length - 1].empId + 1;
+            maxEmpIdObj = empData.reduce((maxIdObj, obj) => (maxIdObj.empId > obj.empId) ? maxIdObj : obj);
+            empId = maxEmpIdObj.empId + 1;
         }
 
         const newEmpObj = {
@@ -266,6 +273,12 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
         };
 
         empData.push(newEmpObj);
+
+        localStorage.setItem('empData', JSON.stringify(empData));
+
+        const boolSortOptions = sortOptions.map(val => +val);
+
+        sortEmployeeData(...boolSortOptions);
     }
     else {
         const reqEmpObj = empData.find(empObj => {
@@ -280,12 +293,12 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
         reqEmpObj.empDob = empDob;
         reqEmpObj.empSkill = empSkill;
 
-    }
-    localStorage.setItem('empData', JSON.stringify(empData));
+        localStorage.setItem('empData', JSON.stringify(empData));
 
-    removeEmpDetail(true);
-    listEmpDetail();
-}
+        removeEmpDetail(true);
+        listEmpDetail();
+    }
+};
 
 const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove all/individual employee data and set placeholder image
     if (removeAll) {
@@ -305,9 +318,9 @@ const removeEmpDetail = function (removeAll, deleteEmpList) { // Function remove
 
         localStorage.setItem('empData', JSON.stringify(reqData));
     }
-}
+};
 
-const validateInput = function () { // Basic Name, Email, DoB validation of data
+const validateInput = function () { // Basic Name, Email, DoB, Designation, skill validation of data
     const empName = document.querySelector('#emp-name').value;
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
@@ -318,7 +331,7 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
     const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
     const stringSpaceRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
-    const stringSymobolRegex = new RegExp(/^[a-zA-Z ,+]{1,50}$/);
+    const stringSymobolRegex = new RegExp(/^[a-zA-Z ,+]{1,100}$/);
 
     const validateRegex = (regexPatternObj, text) => {
         if (regexPatternObj.test(text)) {
@@ -327,7 +340,7 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
         else {
             validationErrors.push(1);
         }
-    }
+    };
 
     validateRegex(stringSpaceRegex, empName);
     validateRegex(emailRegex, empEmail);
@@ -337,6 +350,108 @@ const validateInput = function () { // Basic Name, Email, DoB validation of data
 
     return validationErrors;
 
-}
+};
 
 /*-------END: Add, Update, Delete Employee Implementation-------*/
+
+/*-------START: Sort Employee Data Listing Implementation-------*/
+
+const sortEmployeeData = function (withSortOption) { // Sort employee data, localstorage and display
+    const sortDropdownHeading = document.getElementById('sort-dropdown-head');
+
+    let empData = (localStorage.getItem('empFilterData') !== null)
+        ? JSON.parse(localStorage.getItem('empFilterData'))
+        : JSON.parse(localStorage.getItem('empData'));
+
+    const idComparatorFunction = (firstObj, secondObj) => {
+        return firstObj.empId - secondObj.empId;
+    };
+    const nameComparatorFunction = (firstObj, secondObj) => {
+        const nameA = firstObj.empName.toUpperCase();
+        const nameB = secondObj.empName.toUpperCase();
+        if (nameA < nameB) {
+            return -1;
+        }
+        if (nameA > nameB) {
+            return 1;
+        }
+        return 0;
+    };
+
+    switch (withSortOption) {
+        case 'id-asc':
+            sortDropdownHeading.innerText = 'Employee ID (Low > High)';
+            sortDropdownHeading.dataset.sortOption = 'id-asc';
+            empData.sort((firstItem, secondItem) => {
+                return idComparatorFunction(firstItem, secondItem);
+            });
+            break;
+        case 'id-dec':
+            sortDropdownHeading.innerText = 'Employee ID (High > Low)';
+            sortDropdownHeading.dataset.sortOption = 'id-dec';
+            empData.sort((firstItem, secondItem) => {
+                return idComparatorFunction(secondItem, firstItem);
+            });
+            break;
+        case 'name-asc':
+            sortDropdownHeading.innerText = 'Employee Name (A > Z)';
+            sortDropdownHeading.dataset.sortOption = 'name-asc';
+            empData.sort((firstItem, secondItem) => {
+                return nameComparatorFunction(firstItem, secondItem);
+            });
+            break;
+        case 'name-dec':
+            sortDropdownHeading.innerText = 'Employee Name (Z > A)';
+            sortDropdownHeading.dataset.sortOption = 'name-dec';
+            empData.sort((firstItem, secondItem) => {
+                return nameComparatorFunction(secondItem, firstItem);
+            });
+            break;
+    }
+
+    if (localStorage.getItem('empFilterData') !== null) {
+        localStorage.setItem('empFilterData', JSON.stringify(empData));
+        removeEmpDetail(true);
+        listEmpDetail(true);
+    }
+    else {
+        localStorage.setItem('empData', JSON.stringify(empData));
+        removeEmpDetail(true);
+        listEmpDetail();
+    }
+};
+
+/*-------END: Sort Employee Data Listing Implementation-------*/
+
+/*-------START: Filter Employee Data Listing Implementation-------*/
+
+const filterEmployeeData = function (dropdownBox) { // Function filter skill, localstorage and display it
+    const filterDropdownSelect = document.getElementById('filter-skill-dropdown');
+    const changeDropdownHeading = dropdownBox.querySelector('span');
+    const empData = JSON.parse(localStorage.getItem('empData'));
+
+    filterDropdownSelect.onclick = (event) => {
+        if (event.target.dataset.skillid.startsWith('id')) {
+            const selectedSkillId = +event.target.dataset.skillid.slice(3);
+            changeDropdownHeading.innerText = event.target.innerText;
+
+            const filteredSkillCollection = empData.filter(empObj => {
+                if (empObj.empSkill.includes(selectedSkillId)) {
+                    return empObj
+                }
+            });
+
+            localStorage.setItem('empFilterData', JSON.stringify(filteredSkillCollection));
+            removeEmpDetail(true);
+            listEmpDetail(true);
+        }
+        else {
+            const sortDropdownHeading = document.getElementById('sort-dropdown-head');
+            changeDropdownHeading.innerText = 'Skill Search';
+            localStorage.removeItem('empFilterData');
+            sortEmployeeData(sortDropdownHeading.dataset.sortOption);
+        }
+    };
+};
+
+/*-------END: Filter Employee Data Listing Implementation-------*/

@@ -30,24 +30,24 @@
         <div id="format-table-tools" class="flex-box content-spacing">
             <div id="search-sort" class="flex-box">
                 <div class="dropdown-element" onclick="toggleDropdown(this)">
-                    <div id="skill-dropdown" class="dropdown">
+                    <div id="skill-dropdown" class="dropdown" onclick="filterEmployeeData(this)">
                         <span>Skill Search</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
                     </div>
-                    <div class="dropdown-content skill-dropdown-content display-none">
+                    <div id="filter-skill-dropdown" class="dropdown-content skill-dropdown-content display-none">
                     </div>
                 </div>
                 <div class="dropdown-element" onclick="toggleDropdown(this)">
                     <div id="sort-dropdown" class="dropdown">
-                        <span>Employee ID (Low > High)</span>
+                        <span id="sort-dropdown-head" data-sort-option="id-asc">Employee ID (Low > High)</span>
                         <img src="images/down-arrow.svg" alt="dropdown icon">
                     </div>
                     <div id="sort-dropdown-content" class="dropdown-content display-none">
                         <ul>
-                            <li>Employee ID (Low > High)</li>
-                            <li>Employee ID (High > Low)</li>
-                            <li>Employee Name (A > Z)</li>
-                            <li>Employee Name (Z > A)</li>
+                            <li onclick="sortEmployeeData('id-asc')">Employee ID (Low > High)</li>
+                            <li onclick="sortEmployeeData('id-dec')">Employee ID (High > Low)</li>
+                            <li onclick="sortEmployeeData('name-asc')">Employee Name (A > Z)</li>
+                            <li onclick="sortEmployeeData('name-dec')">Employee Name (Z > A)</li>
                         </ul>
                     </div>
                 </div>
@@ -92,7 +92,8 @@
                             <label for="emp-designation">Designation : </label>
                             <input type="text" id="emp-designation" value="">
                         </div>
-                        <div data-error-name="Employee designation" id="validation-error-designation" class="validation-error">
+                        <div data-error-name="Employee designation" id="validation-error-designation"
+                            class="validation-error">
                         </div>
                     </div>
                     <div class="form-item-spacing flex-box">
