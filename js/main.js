@@ -21,7 +21,8 @@ const skillListFetch = getContent('json/skill.json')
     });
 
 Promise.all([empDataFetch, skillListFetch])
-    .then((data) => { // Ensure function call only after given promise is achieved
+    .then((data) => { // Ensure function call only after given promises are achieved
+        localStorage.removeItem('empFilterData');
         listEmpDetail();
         fillSkillDropdown();
     });
