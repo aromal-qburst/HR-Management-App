@@ -440,6 +440,7 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
     const empData = JSON.parse(localStorage.getItem('empData'));
 
     filterDropdownSelect.onclick = (event) => {
+        const sortDropdownHeading = document.getElementById('sort-dropdown-head');
         if (event.target.dataset.skillid.startsWith('id')) {
             const selectedSkillId = +event.target.dataset.skillid.slice(3);
             changeDropdownHeading.innerText = event.target.innerText;
@@ -451,11 +452,9 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
             });
 
             localStorage.setItem('empFilterData', JSON.stringify(filteredSkillCollection));
-            removeEmpDetail(true);
-            listEmpDetail(true);
+            sortEmployeeData(sortDropdownHeading.dataset.sortOption);
         }
         else {
-            const sortDropdownHeading = document.getElementById('sort-dropdown-head');
             changeDropdownHeading.innerText = 'Skill Search';
             localStorage.removeItem('empFilterData');
             sortEmployeeData(sortDropdownHeading.dataset.sortOption);
