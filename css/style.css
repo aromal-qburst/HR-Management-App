@@ -660,6 +660,7 @@ textarea {
 
 #modal-form input[type="text"],
 #modal-form input[type="email"] {
+  width: 50%;
   font-size: 17px;
   padding: 10px 14px;
   color: var(--darkblue);
@@ -841,6 +842,7 @@ textarea {
 
 #skill-autocomplete {
   position: relative;
+  width: 50%;
   display: inline-block;
 }
 
@@ -850,7 +852,9 @@ textarea {
   border-bottom: none;
   border-top: none;
   z-index: 2;
-  width: 253px;
+  top: 0;
+  left: 0;
+  right: 0;
   top: 100%;
   background-color: var(--white);
 }
@@ -871,8 +875,6 @@ textarea {
 }
 
 #skill-display-section {
-  width: 253px;
-  height: 70px;
   border: 1px solid var(--darkgray);
   font-size: 16px;
   padding: 5px 4px;
@@ -892,6 +894,7 @@ textarea {
   padding: 0 5px;
   border-radius: 10px;
   background-color: #f1f1f1;
+  margin: 3px 3px;
 }
 
 .skill-closebtn {
@@ -977,14 +980,6 @@ textarea {
     width: 60%;
   }
 
-  #skill-display-section {
-    width: 207px;
-  }
-
-  .autocomplete-items {
-    width: 207px;
-  }
-
   #skill-dropdown {
     padding-top: 22px;
     padding-bottom: 22px;
@@ -1000,14 +995,6 @@ textarea {
 @media screen and (max-width: 1848px) {
   .modal {
     width: 55%;
-  }
-
-  #skill-display-section {
-    width: 220px;
-  }
-
-  .autocomplete-items {
-    width: 220px;
   }
 }
 
@@ -1100,20 +1087,13 @@ textarea {
 
   #modal-form input[type="text"],
   #modal-form input[type="email"] {
+    width: 100%;
     margin-top: 10px;
   }
 
   #modal-form .dropdown {
     padding: 9px 5px;
     margin-top: 10px;
-  }
-
-  #skill-display-section {
-    width: 325px;
-  }
-
-  .autocomplete-items {
-    width: 325px;
   }
 
   #modal-background {
@@ -1142,5 +1122,9 @@ textarea {
 
   .validation-error {
     margin: 0;
+  }
+
+  #skill-autocomplete {
+    width: 100%;
   }
 }
