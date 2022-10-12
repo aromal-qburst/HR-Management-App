@@ -189,17 +189,7 @@ table {
   border-spacing: 0;
 }
 
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-
 input[type="search"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
@@ -385,7 +375,6 @@ html input[type="button"],
 /* 1 */
 input[type="reset"],
 input[type="submit"] {
-  -webkit-appearance: button;
   /* 2 */
   cursor: pointer;
   /* 3 */
@@ -416,22 +405,11 @@ html input[disabled] {
  */
 
 input[type="search"] {
-  -webkit-appearance: textfield;
   /* 1 */
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   /* 2 */
   box-sizing: content-box;
-}
-
-/**
- * Remove inner padding and search cancel button in Safari 5 and Chrome
- * on OS X.
- */
-
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
 }
 
 /**
@@ -544,9 +522,12 @@ textarea {
   --white: #fff;
   --darkblue: #0c4b7e;
   --gray: #fefefe;
-  --red: #ff0000;
-  --green: #00FF00;
+  --darkgray: #767676;
+  --red: #d34848;
+  --green: #249524;
   --lightgreen: #68bd45;
+  --lightblue: #9db3c5;
+  --highgray: #e5d5d5;
 }
 
 /*................................................
@@ -559,7 +540,7 @@ textarea {
 .................................................*/
 .container {
   max-width: 1500px;
-  margin: 15px auto;
+  margin: 10px auto;
   padding: 0 20px;
 }
 
@@ -615,7 +596,7 @@ textarea {
 }
 
 .dropdown-content ul li:hover {
-  background-color: var(--lightgreen);
+  background-color: var(--lightblue);
 }
 
 .content-spacing {
@@ -679,6 +660,7 @@ textarea {
 
 #modal-form input[type="text"],
 #modal-form input[type="email"] {
+  width: 50%;
   font-size: 17px;
   padding: 10px 14px;
   color: var(--darkblue);
@@ -742,10 +724,11 @@ textarea {
 .................................................*/
 #header .flex-box {
   justify-content: space-between;
+  align-items: center;
 }
 
 #header .header-logo {
-  width: 130px;
+  width: 105px;
 }
 
 #header .arrange-admin {
@@ -754,11 +737,11 @@ textarea {
   flex-direction: column;
   align-items: center;
   border: 1px solid var(--darkblue);
-  padding: 5px 20px;
+  padding: 4px 10px;
 }
 
 #header .arrange-admin img {
-  width: 50px;
+  width: 40px;
 }
 
 /*................................................
@@ -767,12 +750,13 @@ textarea {
 #main .content-heading {
   font-size: 40px;
   text-align: center;
-  margin: 40px 0;
+  margin: 35px 0;
   text-decoration: underline;
 }
 
 #format-table-tools {
   justify-content: space-between;
+  align-items: center;
   padding: 20px 0;
   outline: 3px solid var(--darkblue);
 }
@@ -856,6 +840,72 @@ textarea {
   overflow: auto;
 }
 
+#skill-autocomplete {
+  position: relative;
+  width: 50%;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid var(--darkgray);
+  border-bottom: none;
+  border-top: none;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  right: 0;
+  top: 100%;
+  background-color: var(--white);
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--darkgray);
+}
+
+.autocomplete-items div:hover {
+  background-color: var(--highgray);
+}
+
+#skill-autocomplete .autocomplete-active {
+  background-color: var(--lightblue);
+  color: var(--white);
+}
+
+#skill-display-section {
+  border: 1px solid var(--darkgray);
+  font-size: 16px;
+  padding: 5px 4px;
+  overflow: auto;
+}
+
+#skill-display-section::before {
+  content: '\0000a0';
+}
+
+#skill-display-section::after {
+  content: '\0000a0';
+}
+
+.chip {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 10px;
+  background-color: #f1f1f1;
+  margin: 3px 3px;
+}
+
+.skill-closebtn {
+  padding-left: 5px;
+  color: var(--black);
+  font-weight: bold;
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 /*................................................
     7. FOOTER SECTION
 .................................................*/
@@ -905,7 +955,7 @@ textarea {
   }
 
   #modal-form {
-    width: 70%;
+    width: 55%;
   }
 
   #modal-form label {
@@ -1016,6 +1066,7 @@ textarea {
 
   #format-table-tools .new-employee-icon {
     margin-right: 5px;
+    margin-left: 5px;
   }
 
   .dropdown-element {
@@ -1037,6 +1088,7 @@ textarea {
 
   #modal-form input[type="text"],
   #modal-form input[type="email"] {
+    width: 100%;
     margin-top: 10px;
   }
 
@@ -1071,5 +1123,9 @@ textarea {
 
   .validation-error {
     margin: 0;
+  }
+
+  #skill-autocomplete {
+    width: 100%;
   }
 }

@@ -98,7 +98,7 @@
                     </div>
                     <div class="form-item-spacing flex-box">
                         <div class="align-input-textbox">
-                            <label for="emp-dob">Employee DoB : </label>
+                            <label for="emp-dob">Employee DOB : </label>
                             <input type="text" id="emp-dob" value="">
                         </div>
                         <div data-error-name="Employee DoB" id="validation-error-dob" class="validation-error">
@@ -107,14 +107,8 @@
                     <div id="select-employee-skills" class="form-item-spacing flex-box">
                         <div class="align-input-textbox">
                             <label for="emp-skill">Employee Skills : </label>
-                            <input type="text" id="emp-skill" value="">
-                            <div class="dropdown-element" onclick="toggleDropdown(this)">
-                                <div class="dropdown">
-                                    <span>Skill</span>
-                                    <img src="images/down-arrow.svg" alt="dropdown icon">
-                                </div>
-                                <div id="addUpdate-skill-dropdown"
-                                    class="dropdown-content skill-dropdown-content display-none">
+                            <div id="skill-autocomplete">
+                                <div id='skill-display-section' contenteditable="true">
                                 </div>
                             </div>
                         </div>

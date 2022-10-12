@@ -56,6 +56,24 @@ const listEmpDetail = function (filtered = false) { // Handle listing of employe
     }
 };
 
+const generateSkillChips = function (empSkill) { // Function returns required skill chips in HTML syntax
+    const empSkillNames = getSkillNamesFromId(empSkill).split(', ');
+    const displaySkillSection = document.createElement('div');
+
+    for (let skillName of empSkillNames) {
+        let chipContainer = document.createElement('div');
+        chipContainer.setAttribute('class', 'chip');
+        chipContainer.setAttribute('contenteditable', 'false');
+        chipContainer.innerHTML = `
+        <span class="skill-heading">${skillName}</span>
+        <span class="skill-closebtn" onclick="this.parentElement.remove()">&times;</span>
+        `;
+        displaySkillSection.appendChild(chipContainer);
+    }
+
+    return displaySkillSection.innerHTML;
+};
+
 const getSkillNamesFromId = function (empSkill) { // Function returns skillNames for given empObj
     const skillData = JSON.parse(localStorage.getItem('skillData'));
     return empSkill.map((skillIdentifier) => { // Return array with employee skill
@@ -77,7 +95,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     const empMail = empForm.querySelector('#emp-email');
     const empDesignation = empForm.querySelector('#emp-designation');
     const empDob = empForm.querySelector('#emp-dob');
-    const empSkill = empForm.querySelector('#emp-skill');
+    const empSkill = empForm.querySelector('#skill-display-section');
 
     const empData = JSON.parse(localStorage.getItem('empData'));
     const reqEmpObj = empData.find(empObj => {
@@ -90,7 +108,7 @@ const fillUpdateClearForm = function (isClear, empId) { // Function fills or cle
     empMail.value = (isClear) ? '' : `${reqEmpObj.empEmail}`;
     empDesignation.value = (isClear) ? '' : `${reqEmpObj.empDesignation}`;
     empDob.value = (isClear) ? '' : `${reqEmpObj.empDob}`;
-    empSkill.value = (isClear) ? '' : `${getSkillNamesFromId(reqEmpObj.empSkill)}`;
+    empSkill.innerHTML = (isClear) ? '' : `${generateSkillChips(reqEmpObj.empSkill)}`;
 };
 
 /*-------END: Update Form Function Implementation-------*/
@@ -132,8 +150,7 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     const modalBackground = document.getElementById('modal-background');
     const modalContent = modalBackground.querySelector('#addUpdate-emp');
     const modalHeading = modalContent.querySelector('#modal-heading');
-    const skillDropdown = modalContent.querySelector('#addUpdate-skill-dropdown');
-    const modalDropdown = modalContent.querySelector('.dropdown-element');
+    const skillInput = modalContent.querySelector('#skill-display-section')
     const formSubmit = modalContent.querySelector('#form-submit');
     const formCancel = modalContent.querySelector('#form-cancel');
 
@@ -143,28 +160,9 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
     modalBackground.classList.remove('display-none');
     modalContent.classList.remove('display-none');
 
-    skillDropdown.onclick = (event) => {
-        if (event.target.dataset.skillid.startsWith('id-')) {
-            const skillInputTag = document.getElementById('emp-skill');
-            const skillName = event.target.innerText;
-            let skillInput = document.getElementById('emp-skill').value;
-
-            skillInput = (skillInput) ? skillInput.split(', ') : [];
-            skillInput.push(skillName);
-
-            skillInput = [...new Set(skillInput)]; // Remove duplicate elements in array
-
-            skillInputTag.value = skillInput.join(', ');
-            skillInputTag.focus();
-        }
-    };
-
     formCancel.onclick = () => {
         modalContent.classList.add('display-none');
         modalBackground.classList.add('display-none');
-        if (!modalDropdown.querySelector('.display-none')) {
-            toggleDropdown(modalDropdown);
-        }
         fillUpdateClearForm(true);
     };
 
@@ -179,6 +177,8 @@ const addUpdateModal = function (isAdd, empId) { // Handle modal on update or ad
             }
         });
     };
+
+    autoCompleteSkill(skillInput);
 
     if (!isAdd) {
         fillUpdateClearForm(false, empId);
@@ -243,20 +243,25 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    const empSkillNames = document.querySelector('#emp-skill').value.split(', ');
+    const empSkillNames = document.querySelectorAll('.skill-heading');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
+    const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption;
 
-    const empSkill = [];
+    const skillFilterDropdownTitle = document.getElementById('skill-dropdown').querySelector('span');
+    localStorage.removeItem('empFilterData');
+    skillFilterDropdownTitle.innerText = 'Skill Search';
+
+    let empSkill = [];
     empSkillNames.forEach(val => {
         for (let skillObj of skillData) {
-            if (skillObj.skillName == val) {
+            if (skillObj.skillName == val.innerText) {
                 empSkill.push(skillObj.skillId);
             }
         }
     });
+    empSkill = [...new Set(empSkill)];
 
     if (createNew) {
-        const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption.split(', ');
         let empId = 1001;
         if (empData.length > 0) {
             maxEmpIdObj = empData.reduce((maxIdObj, obj) => (maxIdObj.empId > obj.empId) ? maxIdObj : obj);
@@ -276,9 +281,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
         localStorage.setItem('empData', JSON.stringify(empData));
 
-        const boolSortOptions = sortOptions.map(val => +val);
-
-        sortEmployeeData(...boolSortOptions);
+        sortEmployeeData(sortOptions);
     }
     else {
         const reqEmpObj = empData.find(empObj => {
@@ -295,8 +298,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
         localStorage.setItem('empData', JSON.stringify(empData));
 
-        removeEmpDetail(true);
-        listEmpDetail();
+        sortEmployeeData(sortOptions);
     }
 };
 
@@ -325,16 +327,24 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     const empEmail = document.querySelector('#emp-email').value;
     const empDesignation = document.querySelector('#emp-designation').value;
     const empDob = document.querySelector('#emp-dob').value;
-    const empSkill = document.querySelector('#emp-skill').value;
+    const empSkill = document.querySelector('#skill-display-section');
 
     const validationErrors = [];
     const emailRegex = new RegExp(/^[^\s@]+@[^\s@.]+\.[^\s@]+$/);
     const dobRegex = new RegExp(/^([0-9]{2})-([0-9]{2})-([0-9]{4})$/);
     const stringSpaceRegex = new RegExp(/^[a-zA-Z ]{2,30}$/);
-    const stringSymobolRegex = new RegExp(/^[a-zA-Z ,+]{1,100}$/);
 
     const validateRegex = (regexPatternObj, text) => {
         if (regexPatternObj.test(text)) {
+            validationErrors.push(0);
+        }
+        else {
+            validationErrors.push(1);
+        }
+    };
+
+    const skillPresent = (skillTag) => {
+        if (skillTag.querySelector('div')) {
             validationErrors.push(0);
         }
         else {
@@ -346,7 +356,7 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
     validateRegex(emailRegex, empEmail);
     validateRegex(stringSpaceRegex, empDesignation);
     validateRegex(dobRegex, empDob);
-    validateRegex(stringSymobolRegex, empSkill);
+    skillPresent(empSkill);
 
     return validationErrors;
 
@@ -431,6 +441,7 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
     const empData = JSON.parse(localStorage.getItem('empData'));
 
     filterDropdownSelect.onclick = (event) => {
+        const sortDropdownHeading = document.getElementById('sort-dropdown-head');
         if (event.target.dataset.skillid.startsWith('id')) {
             const selectedSkillId = +event.target.dataset.skillid.slice(3);
             changeDropdownHeading.innerText = event.target.innerText;
@@ -442,11 +453,9 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
             });
 
             localStorage.setItem('empFilterData', JSON.stringify(filteredSkillCollection));
-            removeEmpDetail(true);
-            listEmpDetail(true);
+            sortEmployeeData(sortDropdownHeading.dataset.sortOption);
         }
         else {
-            const sortDropdownHeading = document.getElementById('sort-dropdown-head');
             changeDropdownHeading.innerText = 'Skill Search';
             localStorage.removeItem('empFilterData');
             sortEmployeeData(sortDropdownHeading.dataset.sortOption);
@@ -455,3 +464,149 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
 };
 
 /*-------END: Filter Employee Data Listing Implementation-------*/
+
+/*-------START: Autocomplete Skill Listing Implementation-------*/
+
+const moveCursorAtTheEnd = function () { // Position cursor at the end of contenteditable div
+    let selection = document.getSelection();
+    let range = document.createRange();
+    let contenteditable = document.querySelector('div[contenteditable="true"]');
+
+    if (contenteditable.lastChild.nodeType == 3) {
+        range.setStart(contenteditable.lastChild, contenteditable.lastChild.length);
+    } else {
+        range.setStart(contenteditable, contenteditable.childNodes.length);
+    }
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+};
+
+const removeChip = function (closeBtn) {
+    const tagToRemove = closeBtn.parentElement;
+    const tagToRemoveSpace = tagToRemove.parentElement;
+
+    tagToRemove.remove();
+    tagToRemoveSpace.innerHTML = tagToRemoveSpace.innerHTML.replaceAll(/&nbsp;/g, '');
+    moveCursorAtTheEnd();
+}
+
+const autoCompleteSkill = function (skillInput) { // Generate autocomplete with skill list
+    let activeSkillSelection;
+    const skillNames = JSON.parse(localStorage.getItem('skillData')).map(skillObj => skillObj.skillName);
+
+    skillInput.oninput = function (e) {
+        let skillListContainer, eachSkill, i;
+        let textInput = this.innerHTML.split('>').pop();
+        textInput = textInput.replaceAll(/&nbsp;/g, ''); // remove any white space from innerHTML
+        textInput = (textInput.includes(' ')) ? textInput.trim() : textInput;
+        closeAllLists();
+
+        if (!textInput) { return false; }
+        activeSkillSelection = -1;
+        /*create a DIV element that will contain the items (values):*/
+        skillListContainer = document.createElement("DIV");
+        skillListContainer.setAttribute("id", this.id + "autocomplete-list");
+        skillListContainer.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(skillListContainer);
+
+        /*for each item in the array...*/
+        for (i = 0; i < skillNames.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (skillNames[i].slice(0, textInput.length).toUpperCase() == textInput.toUpperCase()) {
+                /*create a DIV element for each matching element:*/
+                eachSkill = document.createElement("DIV");
+                /*make the matching letters bold:*/
+                eachSkill.innerHTML = "<strong>" + skillNames[i].slice(0, textInput.length) + "</strong>";
+                eachSkill.innerHTML += skillNames[i].slice(textInput.length);
+                /*insert a input field that will hold the current array item's value:*/
+                eachSkill.innerHTML += "<input type='hidden' value='" + skillNames[i] + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                eachSkill.onclick = function (e) {
+                    /*insert the value for the autocomplete text field:*/
+                    let textEnteredLength = textInput.length;
+                    skillInput.innerHTML = skillInput.innerHTML.slice(0, -textEnteredLength);
+                    skillInput.innerHTML += `
+                <div class="chip" contenteditable="false">
+                <span class="skill-heading">${this.querySelector('input').value}</span>
+                <span class="skill-closebtn" onclick="removeChip(this)">&times;</span>
+                </div>
+                `;
+                    moveCursorAtTheEnd();
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                };
+                skillListContainer.appendChild(eachSkill);
+            }
+        }
+    };
+    /*execute a function presses a key on the keyboard:*/
+    skillInput.onkeydown = function (e) {
+        let skillNameContainer = document.getElementById(this.id + "autocomplete-list");
+        if (skillNameContainer) {
+            skillNameContainer = skillNameContainer.getElementsByTagName("div");
+        }
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the activeSkillSelection variable:*/
+            activeSkillSelection++;
+            /*and and make the current item more visible:*/
+            addActive(skillNameContainer);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the activeSkillSelection variable:*/
+            activeSkillSelection--;
+            /*and and make the current item more visible:*/
+            addActive(skillNameContainer);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (activeSkillSelection > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (skillNameContainer) {
+                    skillNameContainer[activeSkillSelection].click();
+                }
+            }
+        }
+    };
+    function addActive(highlightSelection) {
+        /*a function to classify an item as "active":*/
+        if (!highlightSelection) {
+            return false;
+        }
+        /*start by removing the "active" class on all items:*/
+        removeActive(highlightSelection);
+        if (activeSkillSelection >= highlightSelection.length) {
+            activeSkillSelection = 0;
+        }
+        if (activeSkillSelection < 0) {
+            activeSkillSelection = (highlightSelection.length - 1);
+        }
+        /*add class "autocomplete-active":*/
+        highlightSelection[activeSkillSelection].classList.add("autocomplete-active");
+    }
+    function removeActive(skillNamesSet) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (let i = 0; i < skillNamesSet.length; i++) {
+            skillNamesSet[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        let skillSetContainer = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < skillSetContainer.length; i++) {
+            if (elmnt != skillSetContainer[i] && elmnt != skillInput) {
+                skillSetContainer[i].parentNode.removeChild(skillSetContainer[i]);
+            }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.onclick = (e) => {
+        closeAllLists(e.target);
+    };
+};
+
+/*-------END: Autocomplete Skill Listing Implementation-------*/
