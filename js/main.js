@@ -21,7 +21,8 @@ const skillListFetch = getContent('json/skill.json')
     });
 
 Promise.all([empDataFetch, skillListFetch])
-    .then((data) => { // Ensure function call only after given promise is achieved
+    .then((data) => { // Ensure function call only after given promises are achieved
+        localStorage.removeItem('empFilterData');
         listEmpDetail();
         fillSkillDropdown();
     });
@@ -31,10 +32,9 @@ const listEmpDetail = function (filtered = false) { // Handle listing of employe
     const removePlaceholderImage = appendEmpData.querySelector('#placeholder-image');
     const filterDropdownText = document.getElementById('skill-dropdown').querySelector('span');
 
-    const empData = (filtered) ? JSON.parse(localStorage.getItem('empFilterData')) : JSON.parse(localStorage.getItem('empData'));
-    if (!filtered) {
-        filterDropdownText.innerText = 'Skill Search';
-    }
+    const empData = (filtered)
+        ? JSON.parse(localStorage.getItem('empFilterData'))
+        : JSON.parse(localStorage.getItem('empData'));
 
     removePlaceholderImage.style.display = 'none';
 
@@ -135,8 +135,9 @@ const fillSkillDropdown = function () { // Fill skill dropdown with data
 
     for (let dropdown of skillDropdowns) {
         let groupSkill = document.createElement('ul');
+        groupSkill.innerHTML = '<li data-skillid="none">None</li>';
         for (let skillObj of skillData) {
-            let individualSkill = document.createElement('li');
+            individualSkill = document.createElement('li');
             individualSkill.setAttribute('data-skillid', `id-${skillObj.skillId}`);
             individualSkill.innerHTML = `${skillObj.skillName}`;
             groupSkill.appendChild(individualSkill);
@@ -363,9 +364,12 @@ const validateInput = function () { // Basic Name, Email, DoB, Designation, skil
 
 /*-------START: Sort Employee Data Listing Implementation-------*/
 
-const sortEmployeeData = function (withEmpId, inAscending) { // Sort employee data, localstorage and display
-    let empData = JSON.parse(localStorage.getItem('empData'));
+const sortEmployeeData = function (withSortOption) { // Sort employee data, localstorage and display
     const sortDropdownHeading = document.getElementById('sort-dropdown-head');
+
+    let empData = (localStorage.getItem('empFilterData') !== null)
+        ? JSON.parse(localStorage.getItem('empFilterData'))
+        : JSON.parse(localStorage.getItem('empData'));
 
     const idComparatorFunction = (firstObj, secondObj) => {
         return firstObj.empId - secondObj.empId;
@@ -382,42 +386,47 @@ const sortEmployeeData = function (withEmpId, inAscending) { // Sort employee da
         return 0;
     };
 
-    if (withEmpId) {
-        if (inAscending) {
+    switch (withSortOption) {
+        case 'id-asc':
             sortDropdownHeading.innerText = 'Employee ID (Low > High)';
-            sortDropdownHeading.dataset.sortOption = '1, 1';
+            sortDropdownHeading.dataset.sortOption = 'id-asc';
             empData.sort((firstItem, secondItem) => {
                 return idComparatorFunction(firstItem, secondItem);
             });
-        }
-        else {
+            break;
+        case 'id-dec':
             sortDropdownHeading.innerText = 'Employee ID (High > Low)';
-            sortDropdownHeading.dataset.sortOption = '1, 0';
+            sortDropdownHeading.dataset.sortOption = 'id-dec';
             empData.sort((firstItem, secondItem) => {
                 return idComparatorFunction(secondItem, firstItem);
             });
-        }
-    }
-    else {
-        if (inAscending) {
+            break;
+        case 'name-asc':
             sortDropdownHeading.innerText = 'Employee Name (A > Z)';
-            sortDropdownHeading.dataset.sortOption = '0, 1';
+            sortDropdownHeading.dataset.sortOption = 'name-asc';
             empData.sort((firstItem, secondItem) => {
                 return nameComparatorFunction(firstItem, secondItem);
             });
-        }
-        else {
+            break;
+        case 'name-dec':
             sortDropdownHeading.innerText = 'Employee Name (Z > A)';
-            sortDropdownHeading.dataset.sortOption = '0, 0';
+            sortDropdownHeading.dataset.sortOption = 'name-dec';
             empData.sort((firstItem, secondItem) => {
                 return nameComparatorFunction(secondItem, firstItem);
             });
-        }
+            break;
     }
 
-    localStorage.setItem('empData', JSON.stringify(empData));
-    removeEmpDetail(true);
-    listEmpDetail();
+    if (localStorage.getItem('empFilterData') !== null) {
+        localStorage.setItem('empFilterData', JSON.stringify(empData));
+        removeEmpDetail(true);
+        listEmpDetail(true);
+    }
+    else {
+        localStorage.setItem('empData', JSON.stringify(empData));
+        removeEmpDetail(true);
+        listEmpDetail();
+    }
 };
 
 /*-------END: Sort Employee Data Listing Implementation-------*/
@@ -443,6 +452,12 @@ const filterEmployeeData = function (dropdownBox) { // Function filter skill, lo
             localStorage.setItem('empFilterData', JSON.stringify(filteredSkillCollection));
             removeEmpDetail(true);
             listEmpDetail(true);
+        }
+        else {
+            const sortDropdownHeading = document.getElementById('sort-dropdown-head');
+            changeDropdownHeading.innerText = 'Skill Search';
+            localStorage.removeItem('empFilterData');
+            sortEmployeeData(sortDropdownHeading.dataset.sortOption);
         }
     };
 };
