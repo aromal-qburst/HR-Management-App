@@ -257,7 +257,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     empSkill = [...new Set(empSkill)];
 
     if (createNew) {
-        const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption.split(', ');
+        const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption;
         let empId = 1001;
         if (empData.length > 0) {
             maxEmpIdObj = empData.reduce((maxIdObj, obj) => (maxIdObj.empId > obj.empId) ? maxIdObj : obj);
@@ -277,9 +277,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
         localStorage.setItem('empData', JSON.stringify(empData));
 
-        const boolSortOptions = sortOptions.map(val => +val);
-
-        sortEmployeeData(...boolSortOptions);
+        sortEmployeeData(sortOptions);
     }
     else {
         const reqEmpObj = empData.find(empObj => {
