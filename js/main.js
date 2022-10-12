@@ -245,6 +245,11 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empDob = document.querySelector('#emp-dob').value;
     const empSkillNames = document.querySelectorAll('.skill-heading');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
+    const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption;
+
+    const skillFilterDropdownTitle = document.getElementById('skill-dropdown').querySelector('span');
+    localStorage.removeItem('empFilterData');
+    skillFilterDropdownTitle.innerText = 'Skill Search';
 
     let empSkill = [];
     empSkillNames.forEach(val => {
@@ -257,7 +262,6 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     empSkill = [...new Set(empSkill)];
 
     if (createNew) {
-        const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption;
         let empId = 1001;
         if (empData.length > 0) {
             maxEmpIdObj = empData.reduce((maxIdObj, obj) => (maxIdObj.empId > obj.empId) ? maxIdObj : obj);
@@ -294,8 +298,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
 
         localStorage.setItem('empData', JSON.stringify(empData));
 
-        removeEmpDetail(true);
-        listEmpDetail();
+        sortEmployeeData(sortOptions);
     }
 };
 
