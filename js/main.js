@@ -483,9 +483,12 @@ const moveCursorAtTheEnd = function () { // Position cursor at the end of conten
 };
 
 const removeChip = function (closeBtn) {
-    closeBtn.parentElement.remove();
-    moveCursorAtTheEnd();
+    const tagToRemove = closeBtn.parentElement;
+    const tagToRemoveSpace = tagToRemove.parentElement;
 
+    tagToRemove.remove();
+    tagToRemoveSpace.innerHTML = tagToRemoveSpace.innerHTML.replaceAll(/&nbsp;/g,'');
+    moveCursorAtTheEnd();
 }
 
 const autoCompleteSkill = function (skillInput) { // Generate autocomplete with skill list
