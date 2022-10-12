@@ -246,7 +246,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
     const empSkillNames = document.querySelectorAll('.skill-heading');
     const skillData = JSON.parse(localStorage.getItem('skillData'));
 
-    const empSkill = [];
+    let empSkill = [];
     empSkillNames.forEach(val => {
         for (let skillObj of skillData) {
             if (skillObj.skillName == val.innerText) {
@@ -254,6 +254,7 @@ const generateUpdateEmpObj = function (createNew, empId) { // Function updates/c
             }
         }
     });
+    empSkill = [...new Set(empSkill)];
 
     if (createNew) {
         const sortOptions = document.getElementById('sort-dropdown-head').dataset.sortOption.split(', ');
@@ -481,6 +482,12 @@ const moveCursorAtTheEnd = function () { // Position cursor at the end of conten
     selection.addRange(range);
 };
 
+const removeChip = function (closeBtn) {
+    closeBtn.parentElement.remove();
+    moveCursorAtTheEnd();
+
+}
+
 const autoCompleteSkill = function (skillInput) { // Generate autocomplete with skill list
     let currentFocus;
     const skillNames = JSON.parse(localStorage.getItem('skillData')).map(skillObj => skillObj.skillName);
@@ -488,7 +495,7 @@ const autoCompleteSkill = function (skillInput) { // Generate autocomplete with 
     skillInput.oninput = function (e) {
         let a, b, i;
         let val = this.innerHTML.split('>').pop();
-        val = val.replace(/&nbsp;/g, ''); // remove any white space from innerHTML
+        val = val.replaceAll(/&nbsp;/g, ''); // remove any white space from innerHTML
         val = (val.includes(' ')) ? val.trim() : val;
         closeAllLists();
 
@@ -520,7 +527,7 @@ const autoCompleteSkill = function (skillInput) { // Generate autocomplete with 
                     skillInput.innerHTML += `
                 <div class="chip" contenteditable="false">
                 <span class="skill-heading">${this.querySelector('input').value}</span>
-                <span class="skill-closebtn" onclick="this.parentElement.remove()">&times;</span>
+                <span class="skill-closebtn" onclick="removeChip(this)">&times;</span>
                 </div>
                 `;
                     moveCursorAtTheEnd();
@@ -587,6 +594,6 @@ const autoCompleteSkill = function (skillInput) { // Generate autocomplete with 
     document.onclick = (e) => {
         closeAllLists(e.target);
     };
-}
+};
 
 /*-------END: Autocomplete Skill Listing Implementation-------*/
