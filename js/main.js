@@ -487,45 +487,45 @@ const removeChip = function (closeBtn) {
     const tagToRemoveSpace = tagToRemove.parentElement;
 
     tagToRemove.remove();
-    tagToRemoveSpace.innerHTML = tagToRemoveSpace.innerHTML.replaceAll(/&nbsp;/g,'');
+    tagToRemoveSpace.innerHTML = tagToRemoveSpace.innerHTML.replaceAll(/&nbsp;/g, '');
     moveCursorAtTheEnd();
 }
 
 const autoCompleteSkill = function (skillInput) { // Generate autocomplete with skill list
-    let currentFocus;
+    let activeSkillSelection;
     const skillNames = JSON.parse(localStorage.getItem('skillData')).map(skillObj => skillObj.skillName);
 
     skillInput.oninput = function (e) {
-        let a, b, i;
-        let val = this.innerHTML.split('>').pop();
-        val = val.replaceAll(/&nbsp;/g, ''); // remove any white space from innerHTML
-        val = (val.includes(' ')) ? val.trim() : val;
+        let skillListContainer, eachSkill, i;
+        let textInput = this.innerHTML.split('>').pop();
+        textInput = textInput.replaceAll(/&nbsp;/g, ''); // remove any white space from innerHTML
+        textInput = (textInput.includes(' ')) ? textInput.trim() : textInput;
         closeAllLists();
 
-        if (!val) { return false; }
-        currentFocus = -1;
+        if (!textInput) { return false; }
+        activeSkillSelection = -1;
         /*create a DIV element that will contain the items (values):*/
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
+        skillListContainer = document.createElement("DIV");
+        skillListContainer.setAttribute("id", this.id + "autocomplete-list");
+        skillListContainer.setAttribute("class", "autocomplete-items");
         /*append the DIV element as a child of the autocomplete container:*/
-        this.parentNode.appendChild(a);
+        this.parentNode.appendChild(skillListContainer);
 
         /*for each item in the array...*/
         for (i = 0; i < skillNames.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
-            if (skillNames[i].slice(0, val.length).toUpperCase() == val.toUpperCase()) {
+            if (skillNames[i].slice(0, textInput.length).toUpperCase() == textInput.toUpperCase()) {
                 /*create a DIV element for each matching element:*/
-                b = document.createElement("DIV");
+                eachSkill = document.createElement("DIV");
                 /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + skillNames[i].slice(0, val.length) + "</strong>";
-                b.innerHTML += skillNames[i].slice(val.length);
+                eachSkill.innerHTML = "<strong>" + skillNames[i].slice(0, textInput.length) + "</strong>";
+                eachSkill.innerHTML += skillNames[i].slice(textInput.length);
                 /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + skillNames[i] + "'>";
+                eachSkill.innerHTML += "<input type='hidden' value='" + skillNames[i] + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
-                b.onclick = function (e) {
+                eachSkill.onclick = function (e) {
                     /*insert the value for the autocomplete text field:*/
-                    let textEnteredLength = val.length;
+                    let textEnteredLength = textInput.length;
                     skillInput.innerHTML = skillInput.innerHTML.slice(0, -textEnteredLength);
                     skillInput.innerHTML += `
                 <div class="chip" contenteditable="false">
@@ -538,58 +538,68 @@ const autoCompleteSkill = function (skillInput) { // Generate autocomplete with 
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
                 };
-                a.appendChild(b);
+                skillListContainer.appendChild(eachSkill);
             }
         }
     };
     /*execute a function presses a key on the keyboard:*/
     skillInput.onkeydown = function (e) {
-        let x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
+        let skillNameContainer = document.getElementById(this.id + "autocomplete-list");
+        if (skillNameContainer) {
+            skillNameContainer = skillNameContainer.getElementsByTagName("div");
+        }
         if (e.keyCode == 40) {
             /*If the arrow DOWN key is pressed,
-            increase the currentFocus variable:*/
-            currentFocus++;
+            increase the activeSkillSelection variable:*/
+            activeSkillSelection++;
             /*and and make the current item more visible:*/
-            addActive(x);
+            addActive(skillNameContainer);
         } else if (e.keyCode == 38) { //up
             /*If the arrow UP key is pressed,
-            decrease the currentFocus variable:*/
-            currentFocus--;
+            decrease the activeSkillSelection variable:*/
+            activeSkillSelection--;
             /*and and make the current item more visible:*/
-            addActive(x);
+            addActive(skillNameContainer);
         } else if (e.keyCode == 13) {
             /*If the ENTER key is pressed, prevent the form from being submitted,*/
             e.preventDefault();
-            if (currentFocus > -1) {
+            if (activeSkillSelection > -1) {
                 /*and simulate a click on the "active" item:*/
-                if (x) x[currentFocus].click();
+                if (skillNameContainer) {
+                    skillNameContainer[activeSkillSelection].click();
+                }
             }
         }
     };
-    function addActive(x) {
+    function addActive(highlightSelection) {
         /*a function to classify an item as "active":*/
-        if (!x) return false;
+        if (!highlightSelection) {
+            return false;
+        }
         /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
+        removeActive(highlightSelection);
+        if (activeSkillSelection >= highlightSelection.length) {
+            activeSkillSelection = 0;
+        }
+        if (activeSkillSelection < 0) {
+            activeSkillSelection = (highlightSelection.length - 1);
+        }
         /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
+        highlightSelection[activeSkillSelection].classList.add("autocomplete-active");
     }
-    function removeActive(x) {
+    function removeActive(skillNamesSet) {
         /*a function to remove the "active" class from all autocomplete items:*/
-        for (let i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
+        for (let i = 0; i < skillNamesSet.length; i++) {
+            skillNamesSet[i].classList.remove("autocomplete-active");
         }
     }
     function closeAllLists(elmnt) {
         /*close all autocomplete lists in the document,
         except the one passed as an argument:*/
-        let x = document.getElementsByClassName("autocomplete-items");
-        for (let i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != skillInput) {
-                x[i].parentNode.removeChild(x[i]);
+        let skillSetContainer = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < skillSetContainer.length; i++) {
+            if (elmnt != skillSetContainer[i] && elmnt != skillInput) {
+                skillSetContainer[i].parentNode.removeChild(skillSetContainer[i]);
             }
         }
     }
